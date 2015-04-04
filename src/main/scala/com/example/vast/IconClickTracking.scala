@@ -4,9 +4,10 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class Survey(value: URI)
+case class IconClickTracking(value: URI)
 
-object Survey extends VASTElement[Survey] {
+object IconClickTracking extends VASTElement[IconClickTracking] {
+
   /**
    * Deserializes a Node to a T.
    * The highest tag of the Node should match
@@ -17,13 +18,13 @@ object Survey extends VASTElement[Survey] {
    *   val ad = Ad.fromXML(elem)
    * }}}
    */
-  def fromXML(node: Node): Survey =
-    Survey(URI.create(node.text))
+  def fromXML(node: Node): IconClickTracking =
+    IconClickTracking(URI.create(node.text))
 
   /**
    * Serializes a T to a Node.
    */
-  def toXML(t: Survey): Node =
-    <Survey>{ t.value.asCData }</Survey>
+  def toXML(t: IconClickTracking): Node =
+    <IconClickTracking>{ t.value.asCData }</IconClickTracking>
 
 }

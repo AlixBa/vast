@@ -5,21 +5,21 @@ trait Required
 object Required {
 
   def fromString(value: String): Required = value match {
-    case "all"  ⇒ AllType
-    case "any"  ⇒ AnyType
-    case "none" ⇒ NoneType
+    case "all"  ⇒ AllRequired
+    case "any"  ⇒ AnyRequired
+    case "none" ⇒ NoneRequired
   }
 
 }
 
-case object AllType extends Required {
+case object AllRequired extends Required {
   override def toString = "all"
 }
 
-case object AnyType extends Required {
+case object AnyRequired extends Required {
   override def toString = "any"
 }
 
-case object NoneType extends Required {
+case object NoneRequired extends Required {
   override def toString = "none"
 }
