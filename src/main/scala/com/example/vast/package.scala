@@ -13,6 +13,15 @@ package object vast {
   trait VASTElement[T] extends fromXMLImplicits with toXMLImplicits {
 
     /**
+     * Deserializes a String to a T.
+     * Makes use of the fromXML method.
+     * Why fromXML? because it is way simplier
+     * to transform Node -> T than String -> T.
+     */
+    def fromString(string: String): T =
+      fromXML(XML.loadString(string))
+
+    /**
      * Deserializes a Node to a T.
      * The highest tag of the Node should match
      * the T.
@@ -25,21 +34,9 @@ package object vast {
     def fromXML(node: Node): T
 
     /**
-     * Deserializes a String to a T.
-     * Makes use of the fromXML method.
-     * Why fromXML? because it is way simplier
-     * to transform Node -> T than String -> T.
-     */
-    def fromString(string: String): T =
-      fromXML(XML.loadString(string))
-
-    /**
      * Serializes a T to a Node.
      */
     def toXML(t: T): Node
-
-    def toString(t: T): String =
-      toXML(t).toString()
 
   }
 

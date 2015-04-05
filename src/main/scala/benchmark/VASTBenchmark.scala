@@ -1,25 +1,34 @@
-package com.example.vast
+package benchmark
 
-import org.scalatest.{ Matchers, WordSpec }
+import com.example.vast.VAST
+import org.openjdk.jmh.annotations._
+import java.util.concurrent.TimeUnit
 
 import scala.xml.Node
 
-class VASTSpec extends WordSpec with Matchers with Fixtures {
+@State(Scope.Thread)
+class VASTBenchmark {
 
-  "VAST library" should {
-
-    "serialize and deserialize correctly" in {
-      val vastObject: VAST = VAST.fromString(vastStr)
-      val vastXML: Node = VAST.toXML(vastObject)
-      val vastObject2 = VAST.fromXML(vastXML)
-
-      vastObject shouldEqual vastObject2
-    }
+  @Benchmark
+  @BenchmarkMode(Array(Mode.AverageTime))
+  @OutputTimeUnit(TimeUnit.MICROSECONDS)
+  def fromString(): VAST = {
+    VAST.fromString(vastStr)
   }
 
-}
+  @Benchmark
+  @BenchmarkMode(Array(Mode.AverageTime))
+  @OutputTimeUnit(TimeUnit.MICROSECONDS)
+  def toXML: Node = {
+    VAST.toXML(vastObject)
+  }
 
-trait Fixtures {
+  @Benchmark
+  @BenchmarkMode(Array(Mode.AverageTime))
+  @OutputTimeUnit(TimeUnit.MICROSECONDS)
+  def toStr: String = {
+    vastXML.toString()
+  }
 
   val vastStr =
     """
@@ -304,5 +313,9 @@ trait Fixtures {
       |  </Ad>
       |</VAST>
     """.stripMargin
+
+  val vastObject = VAST.fromString(vastStr)
+
+  val vastXML = VAST.toXML(vastObject)
 
 }
