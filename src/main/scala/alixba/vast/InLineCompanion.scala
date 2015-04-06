@@ -2,16 +2,33 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class InLineCompanion(width: Int, height: Int, element: InLineCompanionElement,
+case class InLineCompanion(width: Int, height: Int, element: Resource,
                            creativeExtensions: Option[Seq[CreativeExtension]], trackingEvents: Option[Seq[Tracking]],
                            companionClickThrough: Option[CompanionClickThrough], altText: Option[AltText],
                            adParameters: Option[AdParameters], id: Option[String], assetWidth: Option[Int],
                            assetHeight: Option[Int], expandedWidth: Option[Int], expandedHeight: Option[Int],
-                           apiFramework: Option[String], adSlotId: Option[String])
+                           apiFramework: Option[String], adSlotId: Option[String]) extends Companion[InLineCompanion] {
 
-object InLineCompanion extends VASTElement[InLineCompanion] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val elementXML = element.toXML
+    val creativeExtensionsXML = creativeExtensions
+      .map(n ⇒ <CreativeExtensions>{ n.map(_.toXML) }</CreativeExtensions>).toSeq
+    val trackingEventsXML = trackingEvents.map(n ⇒ <TrackingEvents>{ n.map(_.toXML) }</TrackingEvents>).toSeq
+    val companionClickThroughXML = companionClickThrough.map(_.toXML).toSeq
+    val altTextXML = altText.map(_.toXML).toSeq
+    val adParametersXML = adParameters.map(_.toXML).toSeq
 
-  def apply(width: Int, height: Int, element: InLineCompanionElement): InLineCompanion =
+    <Companion width={ width } height={ height } id={ id } assetWidth={ assetWidth } assetHeight={ assetHeight } expandedWidth={ expandedWidth } expandedHeight={ expandedHeight } apiFramework={ apiFramework } adSlotId={ adSlotId }>{ elementXML }{ creativeExtensionsXML }{ trackingEventsXML }{ companionClickThroughXML }{ altTextXML }{ adParametersXML }</Companion>
+  }
+
+}
+
+object InLineCompanion extends VASTElementCompanion[InLineCompanion] {
+
+  def apply(width: Int, height: Int, element: Resource): InLineCompanion =
     InLineCompanion(width, height, element, None, None, None, None, None, None, None, None, None, None, None, None)
 
   /**
@@ -27,7 +44,7 @@ object InLineCompanion extends VASTElement[InLineCompanion] {
   def fromXML(node: Node): InLineCompanion = {
     val width = (node \ "@width").headOption.getOrElseMissingException("width")
     val height = (node \ "@height").headOption.getOrElseMissingException("height")
-    val element = InLineCompanionElement.fromXML(node)
+    val element = Resource.fromXML(node)
     val creativeExtensions = (node \ "CreativeExtensions")
       .headOption.map(n ⇒ (n \ "CreativeExtension").toSeq.map(CreativeExtension.fromXML))
     val trackingEvents = (node \ "TrackingEvents")
@@ -45,60 +62,6 @@ object InLineCompanion extends VASTElement[InLineCompanion] {
 
     InLineCompanion(width, height, element, creativeExtensions, trackingEvents, companionClickThrough, altText,
       adParameters, id, assetWidth, assetHeight, expandedWidth, expandedHeight, apiFramework, adSlotId)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: InLineCompanion): Node = {
-    val elementXML = InLineCompanionElement.toXML(t.element)
-    val creativeExtensionsXML = t.creativeExtensions
-      .map(n ⇒ <CreativeExtensions>{ n.map(CreativeExtension.toXML) }</CreativeExtensions>).toSeq
-    val trackingEventsXML = t.trackingEvents.map(n ⇒ <TrackingEvents>{ n.map(Tracking.toXML) }</TrackingEvents>).toSeq
-    val companionClickThroughXML = t.companionClickThrough.map(CompanionClickThrough.toXML).toSeq
-    val altTextXML = t.altText.map(AltText.toXML).toSeq
-    val adParametersXML = t.adParameters.map(AdParameters.toXML).toSeq
-
-    <Companion width={ t.width } height={ t.height } id={ t.id } assetWidth={ t.assetWidth } assetHeight={ t.assetHeight } expandedWidth={ t.expandedWidth } expandedHeight={ t.expandedHeight } apiFramework={ t.apiFramework } adSlotId={ t.adSlotId }>{ elementXML }{ creativeExtensionsXML }{ trackingEventsXML }{ companionClickThroughXML }{ altTextXML }{ adParametersXML }</Companion>
-  }
-
-}
-
-trait InLineCompanionElement
-
-object InLineCompanionElement extends VASTElement[InLineCompanionElement] {
-
-  /**
-   * Deserializes a Node to a T.
-   * The highest tag of the Node should match
-   * the T.
-   *
-   * {{{
-   *   val elem = <Ad><SomeTags/></Ad>
-   *   val ad = Ad.fromXML(elem)
-   * }}}
-   */
-  def fromXML(node: Node): InLineCompanionElement = {
-    val html = (node \ "HTMLResource").headOption.map(HTMLResource.fromXML)
-    val iframe = (node \ "IFrameResource").headOption.map(IFrameResource.fromXML)
-    val static = (node \ "StaticResource").headOption.map(StaticResource.fromXML)
-
-    html.getOrElse(
-      iframe.getOrElse(
-        static.getOrElseMissingException("HTMLResource", "IFrameResource", "StaticResource")
-      )
-    )
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: InLineCompanionElement): Node = {
-    t match {
-      case h @ HTMLResource(_, _)   ⇒ HTMLResource.toXML(h)
-      case i @ IFrameResource(_)    ⇒ IFrameResource.toXML(i)
-      case s @ StaticResource(_, _) ⇒ StaticResource.toXML(s)
-    }
   }
 
 }

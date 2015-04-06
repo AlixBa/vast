@@ -4,9 +4,17 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class Error(value: URI)
+case class Error(value: URI) extends VASTElement[Error] {
 
-object Error extends VASTElement[Error] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <Error>{ value.asCData }</Error>
+
+}
+
+object Error extends VASTElementCompanion[Error] {
 
   /**
    * Deserializes a Node to a T.
@@ -20,11 +28,5 @@ object Error extends VASTElement[Error] {
    */
   def fromXML(node: Node): Error =
     Error(URI.create(node.text))
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: Error): Node =
-    <Error>{ t.value.asCData }</Error>
 
 }

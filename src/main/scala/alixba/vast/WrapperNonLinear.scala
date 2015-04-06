@@ -5,14 +5,30 @@ import javax.xml.datatype.XMLGregorianCalendar
 import scala.xml.Node
 
 case class WrapperNonLinear(
-  creativeExtensions:      Option[Seq[CreativeExtension]],
-  nonLinearClicksTracking: Seq[NonLinearClickTracking], id: Option[String], width: Option[Int],
-  height: Option[Int], expandedWidth: Option[Int], expandedHeight: Option[Int],
-  scalable: Option[Boolean], maintainAspectRatio: Option[Boolean],
-  minSuggestedDuration: Option[XMLGregorianCalendar], apiFramework: Option[String]
-)
+    creativeExtensions:      Option[Seq[CreativeExtension]],
+    nonLinearClicksTracking: Seq[NonLinearClickTracking], id: Option[String], width: Option[Int],
+    height: Option[Int], expandedWidth: Option[Int], expandedHeight: Option[Int],
+    scalable: Option[Boolean], maintainAspectRatio: Option[Boolean],
+    minSuggestedDuration: Option[XMLGregorianCalendar], apiFramework: Option[String]
+) extends NonLinear[WrapperNonLinear] {
 
-object WrapperNonLinear extends VASTElement[WrapperNonLinear] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val minSuggestedDurationXML = minSuggestedDuration.map(_.toXMLFormat)
+    val creativeExtensionsXML = creativeExtensions
+      .map(n ⇒ <CreativeExtensions>
+                 { n.map(_.toXML) }
+               </CreativeExtensions>).toSeq
+    val nonLinearClicksTrackingXML = nonLinearClicksTracking.map(_.toXML)
+
+    <NonLinear id={ id } width={ width } height={ height } expandedWidth={ expandedWidth } expandedHeight={ expandedHeight } scalable={ scalable } maintainAspectRatio={ maintainAspectRatio } minSuggestedDuration={ minSuggestedDurationXML } apiFramework={ apiFramework }>{ creativeExtensionsXML }{ nonLinearClicksTrackingXML } </NonLinear>
+  }
+
+}
+
+object WrapperNonLinear extends VASTElementCompanion[WrapperNonLinear] {
 
   /**
    * Deserializes a Node to a T.
@@ -40,18 +56,6 @@ object WrapperNonLinear extends VASTElement[WrapperNonLinear] {
 
     WrapperNonLinear(creativeExtensions, nonLinearClicksTracking, id, width, height, expandedWidth, expandedHeight,
       scalable, maintainAspectRatio, minSuggestedDuration, apiFramework)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: WrapperNonLinear): Node = {
-    val minSuggestedDurationXML = t.minSuggestedDuration.map(_.toXMLFormat)
-    val creativeExtensionsXML = t.creativeExtensions
-      .map(n ⇒ <CreativeExtensions>{ n.map(CreativeExtension.toXML) }</CreativeExtensions>).toSeq
-    val nonLinearClicksTrackingXML = t.nonLinearClicksTracking.map(NonLinearClickTracking.toXML)
-
-    <NonLinear id={ t.id } width={ t.width } height={ t.height } expandedWidth={ t.expandedWidth } expandedHeight={ t.expandedHeight } scalable={ t.scalable } maintainAspectRatio={ t.maintainAspectRatio } minSuggestedDuration={ minSuggestedDurationXML } apiFramework={ t.apiFramework }>{ creativeExtensionsXML }{ nonLinearClicksTrackingXML }</NonLinear>
   }
 
 }

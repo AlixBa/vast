@@ -2,9 +2,21 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class WrapperCompanionAds(companions: Seq[WrapperCompanion]) extends WrapperCreativeElement
+case class WrapperCompanionAds(companions: Seq[WrapperCompanion]) extends CompanionAds[WrapperCompanionAds]
+    with WrapperCreativeElement {
 
-object WrapperCompanionAds extends VASTElement[WrapperCompanionAds] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val companionsXML = companions.map(_.toXML)
+
+    <CompanionAds>{ companionsXML }</CompanionAds>
+  }
+
+}
+
+object WrapperCompanionAds extends VASTElementCompanion[WrapperCompanionAds] {
 
   /**
    * Deserializes a Node to a T.
@@ -20,15 +32,6 @@ object WrapperCompanionAds extends VASTElement[WrapperCompanionAds] {
     val companions = (node \ "Companion").toSeq.map(WrapperCompanion.fromXML)
 
     WrapperCompanionAds(companions)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: WrapperCompanionAds): Node = {
-    val companionsXML = t.companions.map(WrapperCompanion.toXML)
-
-    <CompanionAds>{ companionsXML }</CompanionAds>
   }
 
 }

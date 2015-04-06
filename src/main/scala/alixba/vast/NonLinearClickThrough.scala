@@ -4,9 +4,17 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class NonLinearClickThrough(value: URI)
+case class NonLinearClickThrough(value: URI) extends VASTElement[NonLinearClickThrough] {
 
-object NonLinearClickThrough extends VASTElement[NonLinearClickThrough] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <NonLinearClickThrough>{ value.asCData }</NonLinearClickThrough>
+
+}
+
+object NonLinearClickThrough extends VASTElementCompanion[NonLinearClickThrough] {
 
   /**
    * Deserializes a Node to a T.
@@ -20,11 +28,5 @@ object NonLinearClickThrough extends VASTElement[NonLinearClickThrough] {
    */
   def fromXML(node: Node): NonLinearClickThrough =
     NonLinearClickThrough(URI.create(node.text))
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: NonLinearClickThrough): Node =
-    <NonLinearClickThrough>{ t.value.asCData }</NonLinearClickThrough>
 
 }

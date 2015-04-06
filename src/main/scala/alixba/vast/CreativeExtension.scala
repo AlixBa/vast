@@ -2,9 +2,17 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class CreativeExtension(nodes: Seq[Node], attributes: Map[String, String])
+case class CreativeExtension(nodes: Seq[Node], attributes: Map[String, String]) extends VASTElement[CreativeExtension] {
 
-object CreativeExtension extends VASTElement[CreativeExtension] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <CreativeExtension>{ nodes }</CreativeExtension> % attributes.asMetaData
+
+}
+
+object CreativeExtension extends VASTElementCompanion[CreativeExtension] {
 
   /**
    * Deserializes a Node to a T.
@@ -18,11 +26,5 @@ object CreativeExtension extends VASTElement[CreativeExtension] {
    */
   def fromXML(node: Node): CreativeExtension =
     CreativeExtension(node.child, node.attributes.asAttrMap)
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: CreativeExtension): Node =
-    <CreativeExtension>{ t.nodes }</CreativeExtension> % t.attributes.asMetaData
 
 }

@@ -4,14 +4,27 @@ import javax.xml.datatype.XMLGregorianCalendar
 
 import scala.xml.Node
 
-case class Icon(element: IconElement, program: String, width: Int, height: Int, xPosition: String, yPosition: String,
+case class Icon(element: Resource, program: String, width: Int, height: Int, xPosition: String, yPosition: String,
                 iconClicks: Option[IconClicks], iconViewTracking: Seq[IconViewTracking],
                 offset: Option[XMLGregorianCalendar], duration: Option[XMLGregorianCalendar],
-                apiFramework: Option[String])
+                apiFramework: Option[String]) extends VASTElement[Icon] {
 
-object Icon extends VASTElement[Icon] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val elementXML = element.toXML
+    val iconClicksXML = iconClicks.map(_.toXML).toSeq
+    val iconViewTrackingXML = iconViewTracking.map(_.toXML)
 
-  def apply(element: IconElement, program: String, width: Int, height: Int, xPosition: String, yPosition: String): Icon =
+    <Icon program={ program } width={ width } height={ height } xPosition={ xPosition } yPosition={ yPosition } offset={ offset } duration={ duration } apiFramework={ apiFramework }>{ elementXML }{ iconClicksXML }{ iconViewTrackingXML }</Icon>
+  }
+
+}
+
+object Icon extends VASTElementCompanion[Icon] {
+
+  def apply(element: Resource, program: String, width: Int, height: Int, xPosition: String, yPosition: String): Icon =
     Icon(element, program, width, height, xPosition, yPosition, None, Seq.empty, None, None, None)
 
   /**
@@ -25,7 +38,7 @@ object Icon extends VASTElement[Icon] {
    * }}}
    */
   def fromXML(node: Node): Icon = {
-    val element = IconElement.fromXML(node)
+    val element = Resource.fromXML(node)
     val program = (node \ "@program").headOption.getOrElseMissingException("program")
     val width = (node \ "@width").headOption.getOrElseMissingException("width")
     val height = (node \ "@height").headOption.getOrElseMissingException("height")
@@ -38,56 +51,6 @@ object Icon extends VASTElement[Icon] {
     val apiFramework = (node \ "@apiFramework").headOption
 
     Icon(element, program, width, height, xPosition, yPosition, iconClicks, iconViewTracking, offset, duration, apiFramework)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: Icon): Node = {
-    val elementXML = IconElement.toXML(t.element)
-    val iconClicksXML = t.iconClicks.map(IconClicks.toXML).toSeq
-    val iconViewTrackingXML = t.iconViewTracking.map(IconViewTracking.toXML)
-
-    <Icon program={ t.program } width={ t.width } height={ t.height } xPosition={ t.xPosition } yPosition={ t.yPosition } offset={ t.offset } duration={ t.duration } apiFramework={ t.apiFramework }>{ elementXML }{ iconClicksXML }{ iconViewTrackingXML }</Icon>
-  }
-
-}
-
-trait IconElement
-
-object IconElement extends VASTElement[IconElement] {
-
-  /**
-   * Deserializes a Node to a T.
-   * The highest tag of the Node should match
-   * the T.
-   *
-   * {{{
-   *   val elem = <Ad><SomeTags/></Ad>
-   *   val ad = Ad.fromXML(elem)
-   * }}}
-   */
-  def fromXML(node: Node): IconElement = {
-    val html = (node \ "HTMLResource").headOption.map(HTMLResource.fromXML)
-    val iframe = (node \ "IFrameResource").headOption.map(IFrameResource.fromXML)
-    val static = (node \ "StaticResource").headOption.map(StaticResource.fromXML)
-
-    html.getOrElse(
-      iframe.getOrElse(
-        static.getOrElseMissingException("HTMLResource", "IFrameResource", "StaticResource")
-      )
-    )
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: IconElement): Node = {
-    t match {
-      case h @ HTMLResource(_, _)   ⇒ HTMLResource.toXML(h)
-      case i @ IFrameResource(_)    ⇒ IFrameResource.toXML(i)
-      case s @ StaticResource(_, _) ⇒ StaticResource.toXML(s)
-    }
   }
 
 }

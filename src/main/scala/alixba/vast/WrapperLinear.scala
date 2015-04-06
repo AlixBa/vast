@@ -4,9 +4,24 @@ import scala.xml.Node
 
 case class WrapperLinear(icons: Option[Seq[Icon]], creativeExtensions: Option[Seq[CreativeExtension]],
                          trackingEvents: Option[Seq[Tracking]], videoClicks: Option[WrapperVideoClicks])
-    extends WrapperCreativeElement
+    extends Linear[WrapperLinear] with WrapperCreativeElement {
 
-object WrapperLinear extends VASTElement[WrapperLinear] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val iconsXML = icons.map(n ⇒ <Icons>{ n.map(_.toXML) }</Icons>).toSeq
+    val creativeExtensionsXML = creativeExtensions
+      .map(n ⇒ <CreativeExtensions>{ n.map(_.toXML) }</CreativeExtensions>).toSeq
+    val trackingEventsXML = trackingEvents.map(n ⇒ <TrackingEvents>{ n.map(_.toXML) }</TrackingEvents>).toSeq
+    val videoClicksXML = videoClicks.map(_.toXML).toSeq
+
+    <Linear>{ iconsXML }{ creativeExtensionsXML }{ trackingEventsXML }{ videoClicksXML }</Linear>
+  }
+
+}
+
+object WrapperLinear extends VASTElementCompanion[WrapperLinear] {
 
   /**
    * Deserializes a Node to a T.
@@ -27,19 +42,6 @@ object WrapperLinear extends VASTElement[WrapperLinear] {
     val videoClicks = (node \ "VideoClicks").headOption.map(WrapperVideoClicks.fromXML)
 
     WrapperLinear(icons, creativeExtensions, trackingEvents, videoClicks)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: WrapperLinear): Node = {
-    val iconsXML = t.icons.map(n ⇒ <Icons>{ n.map(Icon.toXML) }</Icons>).toSeq
-    val creativeExtensionsXML = t.creativeExtensions
-      .map(n ⇒ <CreativeExtensions>{ n.map(CreativeExtension.toXML) }</CreativeExtensions>).toSeq
-    val trackingEventsXML = t.trackingEvents.map(n ⇒ <TrackingEvents>{ n.map(Tracking.toXML) }</TrackingEvents>).toSeq
-    val videoClicksXML = t.videoClicks.map(WrapperVideoClicks.toXML).toSeq
-
-    <Linear>{ iconsXML }{ creativeExtensionsXML }{ trackingEventsXML }{ videoClicksXML }</Linear>
   }
 
 }

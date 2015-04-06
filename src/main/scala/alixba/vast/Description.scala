@@ -2,9 +2,17 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class Description(value: String)
+case class Description(value: String) extends VASTElement[Description] {
 
-object Description extends VASTElement[Description] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <Description>{ value }</Description>
+
+}
+
+object Description extends VASTElementCompanion[Description] {
 
   /**
    * Deserializes a Node to a T.
@@ -18,11 +26,5 @@ object Description extends VASTElement[Description] {
    */
   def fromXML(node: Node): Description =
     Description(node.text)
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: Description): Node =
-    <Description>{ t.value }</Description>
 
 }

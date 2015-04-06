@@ -4,10 +4,17 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class StaticResource(value: URI, creativeType: String) extends IconElement with InLineCompanionElement
-  with InLineNonLinearElement with WrapperCompanionElement
+case class StaticResource(value: URI, creativeType: String) extends Resource {
 
-object StaticResource extends VASTElement[StaticResource] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <StaticResource creativeType={ creativeType }>{ value.asCData }</StaticResource>
+
+}
+
+object StaticResource extends VASTElementCompanion[StaticResource] {
 
   /**
    * Deserializes a Node to a T.
@@ -25,11 +32,5 @@ object StaticResource extends VASTElement[StaticResource] {
 
     StaticResource(value, creativeType)
   }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: StaticResource): Node =
-    <StaticResource creativeType={ t.creativeType }>{ t.value.asCData }</StaticResource>
 
 }

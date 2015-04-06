@@ -5,7 +5,7 @@ import javax.xml.datatype.{ DatatypeFactory, XMLGregorianCalendar }
 import scala.language.implicitConversions
 import scala.xml.{ Node, Text, XML }
 
-trait VASTElement[T] extends fromXMLImplicits with toXMLImplicits {
+trait VASTElementCompanion[T] extends fromXMLImplicits {
 
   /**
    * Deserializes a String to a T.
@@ -28,10 +28,14 @@ trait VASTElement[T] extends fromXMLImplicits with toXMLImplicits {
    */
   def fromXML(node: Node): T
 
+}
+
+trait VASTElement[T] extends toXMLImplicits {
+
   /**
-   * Serializes a T to a Node.
+   * Serializes this T to a Node.
    */
-  def toXML(t: T): Node
+  def toXML: Node
 
 }
 

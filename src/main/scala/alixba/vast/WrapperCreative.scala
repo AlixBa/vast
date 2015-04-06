@@ -3,9 +3,17 @@ package alixba.vast
 import scala.xml.Node
 
 case class WrapperCreative(element: WrapperCreativeElement, id: Option[String], sequence: Option[Int],
-                           AdID: Option[String])
+                           AdID: Option[String]) extends Creative[WrapperCreative] {
 
-object WrapperCreative extends VASTElement[WrapperCreative] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <Creative id={ id } sequence={ sequence } AdID={ AdID }>{ element.toXML }</Creative>
+
+}
+
+object WrapperCreative extends VASTElementCompanion[WrapperCreative] {
 
   def apply(element: WrapperCreativeElement): WrapperCreative =
     WrapperCreative(element, None, None, None)
@@ -29,20 +37,13 @@ object WrapperCreative extends VASTElement[WrapperCreative] {
     WrapperCreative(element, id, sequence, adID)
   }
 
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: WrapperCreative): Node = {
-    val elementXML = WrapperCreativeElement.toXML(t.element)
-
-    <Creative id={ t.id } sequence={ t.sequence } AdID={ t.AdID }>{ elementXML }</Creative>
-  }
-
 }
 
-trait WrapperCreativeElement
+trait WrapperCreativeElement extends CreativeElement {
+  self: VASTElement[_] ⇒
+}
 
-object WrapperCreativeElement extends VASTElement[WrapperCreativeElement] {
+object WrapperCreativeElement extends VASTElementCompanion[WrapperCreativeElement] {
 
   /**
    * Deserializes a Node to a T.
@@ -55,26 +56,15 @@ object WrapperCreativeElement extends VASTElement[WrapperCreativeElement] {
    * }}}
    */
   def fromXML(node: Node): WrapperCreativeElement = {
-    val linear = (node \ "Linear").headOption.map(WrapperLinear.fromXML)
-    val companionAds = (node \ "CompanionAds").headOption.map(WrapperCompanionAds.fromXML)
-    val nonLinearAds = (node \ "NonLinearAds").headOption.map(WrapperNonLinearAds.fromXML)
+    val linear: Option[WrapperCreativeElement] = (node \ "Linear").headOption.map(WrapperLinear.fromXML)
+    val companionAds: Option[WrapperCreativeElement] = (node \ "CompanionAds").headOption.map(WrapperCompanionAds.fromXML)
+    val nonLinearAds: Option[WrapperCreativeElement] = (node \ "NonLinearAds").headOption.map(WrapperNonLinearAds.fromXML)
 
     linear.getOrElse(
       companionAds.getOrElse(
         nonLinearAds.getOrElseMissingException("Linear", "CompanionAds", "NonLinearAds")
       )
     )
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: WrapperCreativeElement): Node = {
-    t match {
-      case l @ WrapperLinear(_, _, _, _) ⇒ WrapperLinear.toXML(l)
-      case c @ WrapperCompanionAds(_)    ⇒ WrapperCompanionAds.toXML(c)
-      case n @ WrapperNonLinearAds(_, _) ⇒ WrapperNonLinearAds.toXML(n)
-    }
   }
 
 }

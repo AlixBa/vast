@@ -4,9 +4,17 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class Survey(value: URI)
+case class Survey(value: URI) extends VASTElement[Survey] {
 
-object Survey extends VASTElement[Survey] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <Survey>{ value.asCData }</Survey>
+
+}
+
+object Survey extends VASTElementCompanion[Survey] {
   /**
    * Deserializes a Node to a T.
    * The highest tag of the Node should match
@@ -19,11 +27,5 @@ object Survey extends VASTElement[Survey] {
    */
   def fromXML(node: Node): Survey =
     Survey(URI.create(node.text))
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: Survey): Node =
-    <Survey>{ t.value.asCData }</Survey>
 
 }

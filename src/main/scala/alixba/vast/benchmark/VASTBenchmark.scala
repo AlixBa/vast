@@ -20,7 +20,7 @@ private[benchmark] class VASTBenchmark {
   @BenchmarkMode(Array(Mode.AverageTime))
   @OutputTimeUnit(TimeUnit.MICROSECONDS)
   def toXML: Node = {
-    VAST.toXML(vastObject)
+    vastObject.toXML
   }
 
   @Benchmark
@@ -316,6 +316,6 @@ private[benchmark] class VASTBenchmark {
 
   val vastObject = VAST.fromString(vastStr)
 
-  val vastXML = VAST.toXML(vastObject)
+  val vastXML = vastObject.toXML
 
 }

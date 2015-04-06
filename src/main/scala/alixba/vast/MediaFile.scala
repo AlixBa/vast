@@ -7,8 +7,17 @@ import scala.xml.Node
 case class MediaFile(value: URI, delivery: Delivery, `type`: String, width: Int, height: Int, id: Option[String],
                      bitrate: Option[Int], minBitrate: Option[Int], maxBitrate: Option[Int], scalable: Option[Boolean],
                      maintainAspectRatio: Option[Boolean], apiFramework: Option[String], codec: Option[String])
+    extends VASTElement[MediaFile] {
 
-object MediaFile extends VASTElement[MediaFile] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <MediaFile delivery={ delivery.toString } type={ `type` } width={ width } height={ height } id={ id } bitrate={ bitrate } minBitrate={ minBitrate } maxBitrate={ maxBitrate } scalable={ scalable } maintainAspectRatio={ maintainAspectRatio } apiFramework={ apiFramework } codec={ codec }>{ value.asCData }</MediaFile>
+
+}
+
+object MediaFile extends VASTElementCompanion[MediaFile] {
 
   def apply(value: URI, delivery: Delivery, `type`: String, width: Int, height: Int): MediaFile =
     MediaFile(value, delivery, `type`, width, height, None, None, None, None, None, None, None, None)
@@ -42,11 +51,5 @@ object MediaFile extends VASTElement[MediaFile] {
     MediaFile(value, delivery, `type`, width, height, id, bitrate, minBitrate, maxBitrate, scalable,
       maintainAspectRatio, apiFramework, codec)
   }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: MediaFile): Node =
-    <MediaFile delivery={ t.delivery.toString } type={ t.`type` } width={ t.width } height={ t.height } id={ t.id } bitrate={ t.bitrate } minBitrate={ t.minBitrate } maxBitrate={ t.maxBitrate } scalable={ t.scalable } maintainAspectRatio={ t.maintainAspectRatio } apiFramework={ t.apiFramework } codec={ t.codec }>{ t.value.asCData }</MediaFile>
 
 }

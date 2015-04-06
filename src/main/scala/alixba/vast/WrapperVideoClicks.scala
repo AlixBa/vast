@@ -3,8 +3,21 @@ package alixba.vast
 import scala.xml.Node
 
 case class WrapperVideoClicks(clicksTracking: Seq[ClickTracking], customClicks: Seq[CustomClick])
+    extends VideoClicks[WrapperVideoClicks] {
 
-object WrapperVideoClicks extends VASTElement[WrapperVideoClicks] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val clickTrackingXML = clicksTracking.map(_.toXML)
+    val customClicksXML = customClicks.map(_.toXML)
+
+    <VideoClicks>{ clickTrackingXML }{ customClicksXML }</VideoClicks>
+  }
+
+}
+
+object WrapperVideoClicks extends VASTElementCompanion[WrapperVideoClicks] {
 
   /**
    * Deserializes a Node to a T.
@@ -21,16 +34,6 @@ object WrapperVideoClicks extends VASTElement[WrapperVideoClicks] {
     val customClicks = (node \ "CustomClick").toSeq.map(CustomClick.fromXML)
 
     WrapperVideoClicks(clickTracking, customClicks)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: WrapperVideoClicks): Node = {
-    val clickTrackingXML = t.clicksTracking.map(ClickTracking.toXML)
-    val customClicksXML = t.customClicks.map(CustomClick.toXML)
-
-    <VideoClicks>{ clickTrackingXML }{ customClicksXML }</VideoClicks>
   }
 
 }

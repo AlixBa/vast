@@ -3,9 +3,22 @@ package alixba.vast
 import scala.xml.Node
 
 case class InLineVideoClicks(clickThrough: Option[ClickThrough], clicksTracking: Seq[ClickTracking],
-                             customClicks: Seq[CustomClick])
+                             customClicks: Seq[CustomClick]) extends VideoClicks[InLineVideoClicks] {
 
-object InLineVideoClicks extends VASTElement[InLineVideoClicks] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val clickThroughXML = clickThrough.map(_.toXML).toSeq
+    val clickTrackingXML = clicksTracking.map(_.toXML)
+    val customClicksXML = customClicks.map(_.toXML)
+
+    <VideoClicks>{ clickThroughXML }{ clickTrackingXML }{ customClicksXML }</VideoClicks>
+  }
+
+}
+
+object InLineVideoClicks extends VASTElementCompanion[InLineVideoClicks] {
 
   /**
    * Deserializes a Node to a T.
@@ -23,17 +36,6 @@ object InLineVideoClicks extends VASTElement[InLineVideoClicks] {
     val customClicks = (node \ "CustomClick").toSeq.map(CustomClick.fromXML)
 
     InLineVideoClicks(clickThrough, clickTracking, customClicks)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: InLineVideoClicks): Node = {
-    val clickThroughXML = t.clickThrough.map(ClickThrough.toXML).toSeq
-    val clickTrackingXML = t.clicksTracking.map(ClickTracking.toXML)
-    val customClicksXML = t.customClicks.map(CustomClick.toXML)
-
-    <VideoClicks>{ clickThroughXML }{ clickTrackingXML }{ customClicksXML }</VideoClicks>
   }
 
 }

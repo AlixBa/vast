@@ -5,9 +5,27 @@ import scala.xml.Node
 case class InLineLinear(duration: Duration, icons: Option[Seq[Icon]], creativeExtensions: Option[Seq[CreativeExtension]],
                         trackingEvents: Option[Seq[Tracking]], adParameters: Option[AdParameters],
                         videoClicks: Option[InLineVideoClicks], mediaFiles: Option[Seq[MediaFile]],
-                        skipoffset: Option[String]) extends InLineCreativeElement
+                        skipoffset: Option[String]) extends Linear[InLineLinear] with InLineCreativeElement {
 
-object InLineLinear extends VASTElement[InLineLinear] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val durationXML = duration.toXML
+    val iconsXML = icons.map(n ⇒ <Icons>{ n.map(_.toXML) }</Icons>).toSeq
+    val creativeExtensionsXML = creativeExtensions
+      .map(n ⇒ <CreativeExtensions>{ n.map(_.toXML) }</CreativeExtensions>).toSeq
+    val trackingEventsXML = trackingEvents.map(n ⇒ <TrackingEvents>{ n.map(_.toXML) }</TrackingEvents>).toSeq
+    val adParametersXML = adParameters.map(_.toXML).toSeq
+    val videoClicksXML = videoClicks.map(_.toXML).toSeq
+    val mediaFilesXML = mediaFiles.map(n ⇒ <MediaFiles>{ n.map(_.toXML) }</MediaFiles>).toSeq
+
+    <Linear skipoffset={ skipoffset }>{ durationXML }{ iconsXML }{ creativeExtensionsXML }{ trackingEventsXML }{ adParametersXML }{ videoClicksXML }{ mediaFilesXML }</Linear>
+  }
+
+}
+
+object InLineLinear extends VASTElementCompanion[InLineLinear] {
 
   def apply(duration: Duration): InLineLinear =
     InLineLinear(duration, None, None, None, None, None, None, None)
@@ -36,22 +54,6 @@ object InLineLinear extends VASTElement[InLineLinear] {
     val skipoffset = (node \ "@skipoffset").headOption
 
     InLineLinear(duration, icons, creativeExtensions, trackingEvents, adParameters, videoClicks, mediaFiles, skipoffset)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: InLineLinear): Node = {
-    val durationXML = Duration.toXML(t.duration)
-    val iconsXML = t.icons.map(n ⇒ <Icons>{ n.map(Icon.toXML) }</Icons>).toSeq
-    val creativeExtensionsXML = t.creativeExtensions
-      .map(n ⇒ <CreativeExtensions>{ n.map(CreativeExtension.toXML) }</CreativeExtensions>).toSeq
-    val trackingEventsXML = t.trackingEvents.map(n ⇒ <TrackingEvents>{ n.map(Tracking.toXML) }</TrackingEvents>).toSeq
-    val adParametersXML = t.adParameters.map(AdParameters.toXML).toSeq
-    val videoClicksXML = t.videoClicks.map(InLineVideoClicks.toXML).toSeq
-    val mediaFilesXML = t.mediaFiles.map(n ⇒ <MediaFiles>{ n.map(MediaFile.toXML) }</MediaFiles>).toSeq
-
-    <Linear skipoffset={ t.skipoffset }>{ durationXML }{ iconsXML }{ creativeExtensionsXML }{ trackingEventsXML }{ adParametersXML }{ videoClicksXML }{ mediaFilesXML }</Linear>
   }
 
 }

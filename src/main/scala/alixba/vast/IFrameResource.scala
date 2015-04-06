@@ -4,10 +4,17 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class IFrameResource(value: URI) extends IconElement with InLineCompanionElement with InLineNonLinearElement
-  with WrapperCompanionElement
+case class IFrameResource(value: URI) extends Resource {
 
-object IFrameResource extends VASTElement[IFrameResource] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <IFrameResource>{ value.asCData }</IFrameResource>
+
+}
+
+object IFrameResource extends VASTElementCompanion[IFrameResource] {
 
   /**
    * Deserializes a Node to a T.
@@ -21,12 +28,6 @@ object IFrameResource extends VASTElement[IFrameResource] {
    */
   def fromXML(node: Node): IFrameResource =
     IFrameResource(URI.create(node.text))
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: IFrameResource): Node =
-    <IFrameResource>{ t.value.asCData }</IFrameResource>
 
 }
 

@@ -4,9 +4,17 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class ClickTracking(value: URI, id: Option[String])
+case class ClickTracking(value: URI, id: Option[String]) extends VASTElement[ClickTracking] {
 
-object ClickTracking extends VASTElement[ClickTracking] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <ClickTracking id={ id }>{ value.asCData }</ClickTracking>
+
+}
+
+object ClickTracking extends VASTElementCompanion[ClickTracking] {
 
   def apply(value: URI): ClickTracking =
     ClickTracking(value, None)
@@ -27,11 +35,5 @@ object ClickTracking extends VASTElement[ClickTracking] {
 
     ClickTracking(value, id)
   }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: ClickTracking): Node =
-    <ClickTracking id={ t.id }>{ t.value.asCData }</ClickTracking>
 
 }

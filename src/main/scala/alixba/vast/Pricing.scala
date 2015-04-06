@@ -2,9 +2,17 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class Pricing(value: Double, model: Model, currency: String)
+case class Pricing(value: Double, model: Model, currency: String) extends VASTElement[Pricing] {
 
-object Pricing extends VASTElement[Pricing] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <Pricing model={ model.toString } currency={ currency }>{ value }</Pricing>
+
+}
+
+object Pricing extends VASTElementCompanion[Pricing] {
 
   /**
    * Deserializes a Node to a T.
@@ -23,11 +31,5 @@ object Pricing extends VASTElement[Pricing] {
 
     Pricing(value, model, currency)
   }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: Pricing): Node =
-    <Pricing model={ t.model.toString } currency={ t.currency }>{ t.value }</Pricing>
 
 }

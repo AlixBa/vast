@@ -4,9 +4,17 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class Tracking(value: URI, event: Event, offset: Option[String])
+case class Tracking(value: URI, event: Event, offset: Option[String]) extends VASTElement[Tracking] {
 
-object Tracking extends VASTElement[Tracking] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <Tracking event={ event.toString } offset={ offset }>{ value.asCData }</Tracking>
+
+}
+
+object Tracking extends VASTElementCompanion[Tracking] {
 
   def apply(value: URI, event: Event): Tracking =
     Tracking(value, event, None)
@@ -28,11 +36,5 @@ object Tracking extends VASTElement[Tracking] {
 
     Tracking(value, event, offset)
   }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: Tracking): Node =
-    <Tracking event={ t.event.toString } offset={ t.offset }>{ t.value.asCData }</Tracking>
 
 }

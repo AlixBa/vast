@@ -2,9 +2,16 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class Advertiser(value: String)
+case class Advertiser(value: String) extends VASTElement[Advertiser] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <Advertiser>{ value }</Advertiser>
 
-object Advertiser extends VASTElement[Advertiser] {
+}
+
+object Advertiser extends VASTElementCompanion[Advertiser] {
 
   /**
    * Deserializes a Node to a T.
@@ -18,11 +25,5 @@ object Advertiser extends VASTElement[Advertiser] {
    */
   def fromXML(node: Node): Advertiser =
     Advertiser(node.text)
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: Advertiser): Node =
-    <Advertiser>{ t.value }</Advertiser>
 
 }

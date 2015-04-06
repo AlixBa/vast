@@ -4,9 +4,17 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class VASTAdTagURI(value: URI)
+case class VASTAdTagURI(value: URI) extends VASTElement[VASTAdTagURI] {
 
-object VASTAdTagURI extends VASTElement[VASTAdTagURI] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <VASTAdTagURI>{ value.asCData }</VASTAdTagURI>
+
+}
+
+object VASTAdTagURI extends VASTElementCompanion[VASTAdTagURI] {
 
   /**
    * Deserializes a Node to a T.
@@ -20,11 +28,5 @@ object VASTAdTagURI extends VASTElement[VASTAdTagURI] {
    */
   def fromXML(node: Node): VASTAdTagURI =
     VASTAdTagURI(URI.create(node.text))
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: VASTAdTagURI): Node =
-    <VASTAdTagURI>{ t.value.asCData }</VASTAdTagURI>
 
 }

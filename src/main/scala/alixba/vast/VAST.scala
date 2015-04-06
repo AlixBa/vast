@@ -2,9 +2,20 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class VAST(version: String, ads: Seq[Ad])
+case class VAST(version: String, ads: Seq[Ad]) extends VASTElement[VAST] {
 
-object VAST extends VASTElement[VAST] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val adsXML = ads.map(_.toXML)
+
+    <VAST version={ version }>{ adsXML }</VAST>
+  }
+
+}
+
+object VAST extends VASTElementCompanion[VAST] {
 
   def apply(version: String): VAST =
     VAST(version, Seq.empty)
@@ -24,15 +35,6 @@ object VAST extends VASTElement[VAST] {
     val version = (node \ "@version").headOption.getOrElseMissingException("version")
 
     VAST(version, ads)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: VAST): Node = {
-    val adsXML = t.ads.map(Ad.toXML)
-
-    <VAST version={ t.version }>{ adsXML }</VAST>
   }
 
 }

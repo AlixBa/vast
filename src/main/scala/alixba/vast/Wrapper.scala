@@ -4,9 +4,25 @@ import scala.xml.Node
 
 case class Wrapper(adSystem: AdSystem, vastAdTagURI: VASTAdTagURI, creatives: Seq[WrapperCreative],
                    error: Option[Error], impressions: Seq[Impression], extensions: Option[Seq[Extension]])
-    extends AdElement
+    extends VASTElement[Wrapper] with AdElement {
 
-object Wrapper extends VASTElement[Wrapper] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val adSystemXML = adSystem.toXML
+    val vastAdTagURIXML = vastAdTagURI.toXML
+    val creativesXML = creatives.map(_.toXML)
+    val errorXML = error.map(_.toXML).toSeq
+    val impressionXML = impressions.map(_.toXML)
+    val extensionsXML = extensions.map(n ⇒ <Extensions>{ n.map(_.toXML) }</Extensions>).toSeq
+
+    <Wrapper>{ adSystemXML }{ vastAdTagURIXML }{ errorXML }<Creatives>{ creativesXML }</Creatives>{ impressionXML }{ extensionsXML }</Wrapper>
+  }
+
+}
+
+object Wrapper extends VASTElementCompanion[Wrapper] {
 
   def apply(adSystem: AdSystem, vastAdTagURI: VASTAdTagURI, creatives: Seq[WrapperCreative]): Wrapper =
     Wrapper(adSystem, vastAdTagURI, creatives, None, Seq.empty, None)
@@ -31,20 +47,6 @@ object Wrapper extends VASTElement[Wrapper] {
     val extensions = (node \ "Extensions").headOption.map(n ⇒ (n \ "Extension").toSeq.map(Extension.fromXML))
 
     Wrapper(adSystem, vastAdTagURI, creatives, error, impressions, extensions)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: Wrapper): Node = {
-    val adSystemXML = AdSystem.toXML(t.adSystem)
-    val vastAdTagURIXML = VASTAdTagURI.toXML(t.vastAdTagURI)
-    val creativesXML = t.creatives.map(WrapperCreative.toXML)
-    val errorXML = t.error.map(Error.toXML).toSeq
-    val impressionXML = t.impressions.map(Impression.toXML)
-    val extensionsXML = t.extensions.map(n ⇒ <Extensions>{ n.map(Extension.toXML) }</Extensions>).toSeq
-
-    <Wrapper>{ adSystemXML }{ vastAdTagURIXML }{ errorXML }<Creatives>{ creativesXML }</Creatives>{ impressionXML }{ extensionsXML }</Wrapper>
   }
 
 }

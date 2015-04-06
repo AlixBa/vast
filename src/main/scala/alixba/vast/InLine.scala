@@ -5,9 +5,29 @@ import scala.xml.Node
 case class InLine(adSystem: AdSystem, adTitle: AdTitle, creatives: Seq[InLineCreative],
                   description: Option[Description], advertiser: Option[Advertiser], pricing: Option[Pricing],
                   survey: Option[Survey], error: Option[Error], impressions: Seq[Impression],
-                  extensions: Option[Seq[Extension]]) extends AdElement
+                  extensions: Option[Seq[Extension]]) extends VASTElement[InLine] with AdElement {
 
-object InLine extends VASTElement[InLine] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val adSystemXML = adSystem.toXML
+    val adTitleXML = adTitle.toXML
+    val creativesXML = creatives.map(_.toXML)
+    val descriptionXML = description.map(_.toXML).toSeq
+    val advertiserXML = advertiser.map(_.toXML).toSeq
+    val pricingXML = pricing.map(_.toXML).toSeq
+    val surveyXML = survey.map(_.toXML).toSeq
+    val errorXML = error.map(_.toXML).toSeq
+    val impressionXML = impressions.map(_.toXML)
+    val extensionsXML = extensions.map(n ⇒ <Extensions>{ n.map(_.toXML) }</Extensions>).toSeq
+
+    <InLine>{ adSystemXML }{ adTitleXML }{ descriptionXML }{ advertiserXML }{ pricingXML }{ surveyXML }{ errorXML }<Creatives>{ creativesXML }</Creatives>{ impressionXML }{ extensionsXML }</InLine>
+  }
+
+}
+
+object InLine extends VASTElementCompanion[InLine] {
 
   def apply(adSystem: AdSystem, adTitle: AdTitle, creatives: Seq[InLineCreative]): InLine =
     InLine(adSystem, adTitle, creatives, None, None, None, None, None, Seq.empty, None)
@@ -35,24 +55,6 @@ object InLine extends VASTElement[InLine] {
     val extensions = (node \ "Extensions").headOption.map(n ⇒ (n \ "Extension").toSeq.map(Extension.fromXML))
 
     InLine(adSystem, adTitle, creatives, description, advertiser, pricing, survey, error, impressions, extensions)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: InLine): Node = {
-    val adSystemXML = AdSystem.toXML(t.adSystem)
-    val adTitleXML = AdTitle.toXML(t.adTitle)
-    val creativesXML = t.creatives.map(InLineCreative.toXML)
-    val descriptionXML = t.description.map(Description.toXML).toSeq
-    val advertiserXML = t.advertiser.map(Advertiser.toXML).toSeq
-    val pricingXML = t.pricing.map(Pricing.toXML).toSeq
-    val surveyXML = t.survey.map(Survey.toXML).toSeq
-    val errorXML = t.error.map(Error.toXML).toSeq
-    val impressionXML = t.impressions.map(Impression.toXML)
-    val extensionsXML = t.extensions.map(n ⇒ <Extensions>{ n.map(Extension.toXML) }</Extensions>).toSeq
-
-    <InLine>{ adSystemXML }{ adTitleXML }{ descriptionXML }{ advertiserXML }{ pricingXML }{ surveyXML }{ errorXML }<Creatives>{ creativesXML }</Creatives>{ impressionXML }{ extensionsXML }</InLine>
   }
 
 }

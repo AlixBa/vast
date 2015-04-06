@@ -2,9 +2,17 @@ package alixba.vast
 
 import scala.xml._
 
-case class Extension(nodes: Seq[Node], attributes: Map[String, String])
+case class Extension(nodes: Seq[Node], attributes: Map[String, String]) extends VASTElement[Extension] {
 
-object Extension extends VASTElement[Extension] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <Extension>{ nodes }</Extension> % attributes.asMetaData
+
+}
+
+object Extension extends VASTElementCompanion[Extension] {
 
   /**
    * Deserializes a Node to a T.
@@ -18,11 +26,5 @@ object Extension extends VASTElement[Extension] {
    */
   def fromXML(node: Node): Extension =
     Extension(node.child, node.attributes.asAttrMap)
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: Extension): Node =
-    <Extension>{ t.nodes }</Extension> % t.attributes.asMetaData
 
 }

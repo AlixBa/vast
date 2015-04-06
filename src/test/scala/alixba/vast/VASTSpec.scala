@@ -10,10 +10,15 @@ class VASTSpec extends WordSpec with Matchers with Fixtures {
 
     "serialize and deserialize correctly" in {
       val vastObject: VAST = VAST.fromString(vastStr)
-      val vastXML: Node = VAST.toXML(vastObject)
-      val vastObject2 = VAST.fromXML(vastXML)
+      val vastXML: Node = vastObject.toXML
+      val vastString: String = vastXML.toString()
+      val vastObject2: VAST = VAST.fromString(vastString)
+      val vastXML2: Node = vastObject2.toXML
+      val vastString2: String = vastXML2.toString()
 
       vastObject shouldEqual vastObject2
+      vastXML shouldEqual vastXML2
+      vastString shouldEqual vastString2
     }
   }
 

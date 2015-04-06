@@ -3,8 +3,21 @@ package alixba.vast
 import scala.xml.Node
 
 case class IconClicks(iconClicksTracking: Seq[IconClickTracking], iconClickThrough: Option[IconClickThrough])
+    extends VASTElement[IconClicks] {
 
-object IconClicks extends VASTElement[IconClicks] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val iconClicksTrackingXML = iconClicksTracking.map(_.toXML)
+    val iconClickThroughXML = iconClickThrough.map(_.toXML).toSeq
+
+    <IconClicks>{ iconClicksTrackingXML }{ iconClickThroughXML }</IconClicks>
+  }
+
+}
+
+object IconClicks extends VASTElementCompanion[IconClicks] {
 
   /**
    * Deserializes a Node to a T.
@@ -21,16 +34,6 @@ object IconClicks extends VASTElement[IconClicks] {
     val iconClickThrough = (node \ "IconClickThrough").headOption.map(IconClickThrough.fromXML)
 
     IconClicks(iconClicksTracking, iconClickThrough)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: IconClicks): Node = {
-    val iconClicksTrackingXML = t.iconClicksTracking.map(IconClickTracking.toXML)
-    val iconClickThroughXML = t.iconClickThrough.map(IconClickThrough.toXML).toSeq
-
-    <IconClicks>{ iconClicksTrackingXML }{ iconClickThroughXML }</IconClicks>
   }
 
 }

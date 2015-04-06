@@ -4,9 +4,17 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class CompanionClickThrough(value: URI)
+case class CompanionClickThrough(value: URI) extends VASTElement[CompanionClickThrough] {
 
-object CompanionClickThrough extends VASTElement[CompanionClickThrough] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <CompanionClickThrough>{ value.asCData }</CompanionClickThrough>
+
+}
+
+object CompanionClickThrough extends VASTElementCompanion[CompanionClickThrough] {
 
   /**
    * Deserializes a Node to a T.
@@ -20,11 +28,5 @@ object CompanionClickThrough extends VASTElement[CompanionClickThrough] {
    */
   def fromXML(node: Node): CompanionClickThrough =
     CompanionClickThrough(URI.create(node.text))
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: CompanionClickThrough): Node =
-    <CompanionClickThrough>{ t.value.asCData }</CompanionClickThrough>
 
 }

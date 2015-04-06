@@ -2,10 +2,17 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class HTMLResource(value: String, xmlEncoded: Option[Boolean]) extends IconElement with InLineCompanionElement
-  with InLineNonLinearElement with WrapperCompanionElement
+case class HTMLResource(value: String, xmlEncoded: Option[Boolean]) extends Resource {
 
-object HTMLResource extends VASTElement[HTMLResource] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <HTMLResource xmlEncoded={ xmlEncoded }>{ value }</HTMLResource>
+
+}
+
+object HTMLResource extends VASTElementCompanion[HTMLResource] {
 
   def apply(value: String): HTMLResource =
     HTMLResource(value, None)
@@ -26,11 +33,5 @@ object HTMLResource extends VASTElement[HTMLResource] {
 
     HTMLResource(value, xmlEncoded)
   }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: HTMLResource): Node =
-    <HTMLResource xmlEncoded={ t.xmlEncoded }>{ t.value }</HTMLResource>
 
 }

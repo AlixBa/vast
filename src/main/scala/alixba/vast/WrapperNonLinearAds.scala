@@ -3,9 +3,21 @@ package alixba.vast
 import scala.xml.Node
 
 case class WrapperNonLinearAds(trackingEvents: Option[Seq[Tracking]], nonLinears: Seq[WrapperNonLinear])
-  extends WrapperCreativeElement
+    extends NonLinearAds[WrapperNonLinearAds] with WrapperCreativeElement {
 
-object WrapperNonLinearAds extends VASTElement[WrapperNonLinearAds] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node = {
+    val trackingEventsXML = trackingEvents.map(n ⇒ <TrackingEvents>{ n.map(_.toXML) }</TrackingEvents>).toSeq
+    val nonLinearsXML = nonLinears.map(_.toXML)
+
+    <NonLinearAds>{ trackingEventsXML }{ nonLinearsXML }</NonLinearAds>
+  }
+
+}
+
+object WrapperNonLinearAds extends VASTElementCompanion[WrapperNonLinearAds] {
 
   /**
    * Deserializes a Node to a T.
@@ -22,16 +34,6 @@ object WrapperNonLinearAds extends VASTElement[WrapperNonLinearAds] {
     val nonLinears = (node \ "NonLinear").toSeq.map(WrapperNonLinear.fromXML)
 
     WrapperNonLinearAds(trackingEvents, nonLinears)
-  }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: WrapperNonLinearAds): Node = {
-    val trackingEventsXML = t.trackingEvents.map(n ⇒ <TrackingEvents>{ n.map(Tracking.toXML) }</TrackingEvents>).toSeq
-    val nonLinears = t.nonLinears.map(WrapperNonLinear.toXML)
-
-    <NonLinearAds>{ trackingEventsXML }{ nonLinears }</NonLinearAds>
   }
 
 }

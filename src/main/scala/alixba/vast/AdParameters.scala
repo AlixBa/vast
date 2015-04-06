@@ -2,9 +2,17 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class AdParameters(value: String, xmlEncoded: Option[Boolean])
+case class AdParameters(value: String, xmlEncoded: Option[Boolean]) extends VASTElement[AdParameters] {
 
-object AdParameters extends VASTElement[AdParameters] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <AdParameters xmlEncoded={ xmlEncoded }>{ value }</AdParameters>
+
+}
+
+object AdParameters extends VASTElementCompanion[AdParameters] {
 
   def apply(value: String): AdParameters =
     AdParameters(value, None)
@@ -25,11 +33,5 @@ object AdParameters extends VASTElement[AdParameters] {
 
     AdParameters(value, xmlEncoded)
   }
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: AdParameters): Node =
-    <AdParameters xmlEncoded={ t.xmlEncoded }>{ t.value }</AdParameters>
 
 }

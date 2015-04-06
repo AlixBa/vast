@@ -4,9 +4,17 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class IconViewTracking(value: URI)
+case class IconViewTracking(value: URI) extends VASTElement[IconViewTracking] {
 
-object IconViewTracking extends VASTElement[IconViewTracking] {
+  /**
+   * Serializes this T to a Node.
+   */
+  def toXML: Node =
+    <IconViewTracking>{ value.asCData }</IconViewTracking>
+
+}
+
+object IconViewTracking extends VASTElementCompanion[IconViewTracking] {
 
   /**
    * Deserializes a Node to a T.
@@ -20,11 +28,5 @@ object IconViewTracking extends VASTElement[IconViewTracking] {
    */
   def fromXML(node: Node): IconViewTracking =
     IconViewTracking(URI.create(node.text))
-
-  /**
-   * Serializes a T to a Node.
-   */
-  def toXML(t: IconViewTracking): Node =
-    <IconViewTracking>{ t.value.asCData }</IconViewTracking>
 
 }
