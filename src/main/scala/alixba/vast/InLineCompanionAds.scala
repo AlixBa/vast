@@ -3,10 +3,10 @@ package alixba.vast
 import scala.xml.Node
 
 case class InLineCompanionAds(companions: Seq[InLineCompanion], required: Option[Required])
-    extends CompanionAds[InLineCompanionAds] with InLineCreativeElement {
+    extends CompanionAds with InLineCreativeElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val companionsXML = companions.map(_.toXML)

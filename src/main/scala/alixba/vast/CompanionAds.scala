@@ -1,12 +1,12 @@
 package alixba.vast
 
-trait CompanionAds[T] extends VASTElement[T] {
+trait CompanionAds extends VASTElement {
 
-  def companions: Seq[Companion[_]]
+  def companions: Seq[Companion]
 
 }
 
-trait Companion[T] extends VASTElement[T] {
+trait Companion extends VASTElement {
 
   def width: Int
 

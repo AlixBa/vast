@@ -2,10 +2,10 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class AdParameters(value: String, xmlEncoded: Option[Boolean]) extends VASTElement[AdParameters] {
+case class AdParameters(value: String, xmlEncoded: Option[Boolean]) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <AdParameters xmlEncoded={ xmlEncoded }>{ value }</AdParameters>

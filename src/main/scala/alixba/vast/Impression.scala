@@ -4,10 +4,10 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class Impression(value: URI, id: Option[String]) extends VASTElement[Impression] {
+case class Impression(value: URI, id: Option[String]) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <Impression id={ id }>{ value.asCData }</Impression>

@@ -4,10 +4,10 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class ClickTracking(value: URI, id: Option[String]) extends VASTElement[ClickTracking] {
+case class ClickTracking(value: URI, id: Option[String]) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <ClickTracking id={ id }>{ value.asCData }</ClickTracking>

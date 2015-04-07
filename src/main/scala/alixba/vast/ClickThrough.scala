@@ -4,10 +4,10 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class ClickThrough(value: URI, id: Option[String]) extends VASTElement[ClickThrough] {
+case class ClickThrough(value: URI, id: Option[String]) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <ClickThrough id={ id }>{ value.asCData }</ClickThrough>

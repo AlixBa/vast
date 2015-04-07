@@ -4,9 +4,9 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class IconClickThrough(value: URI) extends VASTElement[IconClickThrough] {
+case class IconClickThrough(value: URI) extends VASTElement {
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <IconClickThrough>{ value.asCData }</IconClickThrough>

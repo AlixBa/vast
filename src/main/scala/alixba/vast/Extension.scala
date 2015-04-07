@@ -2,10 +2,10 @@ package alixba.vast
 
 import scala.xml._
 
-case class Extension(nodes: Seq[Node], attributes: Map[String, String]) extends VASTElement[Extension] {
+case class Extension(nodes: Seq[Node], attributes: Map[String, String]) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <Extension>{ nodes }</Extension> % attributes.asMetaData

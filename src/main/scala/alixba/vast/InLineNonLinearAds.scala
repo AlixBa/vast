@@ -3,10 +3,10 @@ package alixba.vast
 import scala.xml.Node
 
 case class InLineNonLinearAds(trackingEvents: Option[Seq[Tracking]], nonLinears: Seq[InLineNonLinear])
-    extends NonLinearAds[InLineNonLinearAds] with InLineCreativeElement {
+    extends NonLinearAds with InLineCreativeElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val trackingEventsXML = trackingEvents.map(n ⇒ <TrackingEvents>{ n.map(_.toXML) }</TrackingEvents>).toSeq

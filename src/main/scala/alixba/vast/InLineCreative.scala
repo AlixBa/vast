@@ -3,10 +3,10 @@ package alixba.vast
 import scala.xml.Node
 
 case class InLineCreative(element: InLineCreativeElement, id: Option[String], sequence: Option[Int],
-                          AdID: Option[String]) extends Creative[InLineCreative] {
+                          AdID: Option[String]) extends Creative {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <Creative id={ id } sequence={ sequence } AdID={ AdID }>{ element.toXML }</Creative>
@@ -39,9 +39,7 @@ object InLineCreative extends VASTElementCompanion[InLineCreative] {
 
 }
 
-trait InLineCreativeElement extends CreativeElement {
-  self: VASTElement[_] ⇒
-}
+trait InLineCreativeElement extends CreativeElement
 
 object InLineCreativeElement extends VASTElementCompanion[InLineCreativeElement] {
 
@@ -56,9 +54,9 @@ object InLineCreativeElement extends VASTElementCompanion[InLineCreativeElement]
    * }}}
    */
   def fromXML(node: Node): InLineCreativeElement = {
-    val linear: Option[InLineCreativeElement] = (node \ "Linear").headOption.map(InLineLinear.fromXML)
-    val companionAds: Option[InLineCreativeElement] = (node \ "CompanionAds").headOption.map(InLineCompanionAds.fromXML)
-    val nonLinearAds: Option[InLineCreativeElement] = (node \ "NonLinearAds").headOption.map(InLineNonLinearAds.fromXML)
+    val linear = (node \ "Linear").headOption.map(InLineLinear.fromXML)
+    val companionAds = (node \ "CompanionAds").headOption.map(InLineCompanionAds.fromXML)
+    val nonLinearAds = (node \ "NonLinearAds").headOption.map(InLineNonLinearAds.fromXML)
 
     linear.getOrElse(
       companionAds.getOrElse(

@@ -3,10 +3,10 @@ package alixba.vast
 import scala.xml.Node
 
 case class WrapperVideoClicks(clicksTracking: Seq[ClickTracking], customClicks: Seq[CustomClick])
-    extends VideoClicks[WrapperVideoClicks] {
+    extends VideoClicks {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val clickTrackingXML = clicksTracking.map(_.toXML)

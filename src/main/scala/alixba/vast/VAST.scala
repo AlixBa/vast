@@ -2,10 +2,10 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class VAST(version: String, ads: Seq[Ad]) extends VASTElement[VAST] {
+case class VAST(version: String, ads: Seq[Ad]) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val adsXML = ads.map(_.toXML)

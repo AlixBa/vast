@@ -7,10 +7,10 @@ case class InLineCompanion(width: Int, height: Int, element: Resource,
                            companionClickThrough: Option[CompanionClickThrough], altText: Option[AltText],
                            adParameters: Option[AdParameters], id: Option[String], assetWidth: Option[Int],
                            assetHeight: Option[Int], expandedWidth: Option[Int], expandedHeight: Option[Int],
-                           apiFramework: Option[String], adSlotId: Option[String]) extends Companion[InLineCompanion] {
+                           apiFramework: Option[String], adSlotId: Option[String]) extends Companion {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val elementXML = element.toXML

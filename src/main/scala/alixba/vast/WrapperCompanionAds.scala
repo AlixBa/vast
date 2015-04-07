@@ -2,11 +2,10 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class WrapperCompanionAds(companions: Seq[WrapperCompanion]) extends CompanionAds[WrapperCompanionAds]
-    with WrapperCreativeElement {
+case class WrapperCompanionAds(companions: Seq[WrapperCompanion]) extends CompanionAds with WrapperCreativeElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val companionsXML = companions.map(_.toXML)

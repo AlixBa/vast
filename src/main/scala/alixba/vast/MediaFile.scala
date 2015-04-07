@@ -7,10 +7,10 @@ import scala.xml.Node
 case class MediaFile(value: URI, delivery: Delivery, `type`: String, width: Int, height: Int, id: Option[String],
                      bitrate: Option[Int], minBitrate: Option[Int], maxBitrate: Option[Int], scalable: Option[Boolean],
                      maintainAspectRatio: Option[Boolean], apiFramework: Option[String], codec: Option[String])
-    extends VASTElement[MediaFile] {
+    extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <MediaFile delivery={ delivery.toString } type={ `type` } width={ width } height={ height } id={ id } bitrate={ bitrate } minBitrate={ minBitrate } maxBitrate={ maxBitrate } scalable={ scalable } maintainAspectRatio={ maintainAspectRatio } apiFramework={ apiFramework } codec={ codec }>{ value.asCData }</MediaFile>

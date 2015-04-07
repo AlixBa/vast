@@ -1,8 +1,6 @@
 package alixba.vast
 
-import scala.xml.Node
-
-trait Creative[T] extends VASTElement[T] {
+trait Creative extends VASTElement {
 
   def element: CreativeElement
 
@@ -14,9 +12,4 @@ trait Creative[T] extends VASTElement[T] {
 
 }
 
-trait CreativeElement {
-  self: VASTElement[_] ⇒
-
-  def toXML: Node
-
-}
+trait CreativeElement extends VASTElement

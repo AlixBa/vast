@@ -2,15 +2,15 @@ package alixba.vast
 
 import javax.xml.datatype.XMLGregorianCalendar
 
-trait NonLinearAds[T] extends VASTElement[T] {
+trait NonLinearAds extends VASTElement {
 
   def trackingEvents: Option[Seq[Tracking]]
 
-  def nonLinears: Seq[NonLinear[_]]
+  def nonLinears: Seq[NonLinear]
 
 }
 
-trait NonLinear[T] extends VASTElement[T] {
+trait NonLinear extends VASTElement {
 
   def id: Option[String]
 

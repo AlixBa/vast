@@ -4,10 +4,10 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class Error(value: URI) extends VASTElement[Error] {
+case class Error(value: URI) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <Error>{ value.asCData }</Error>

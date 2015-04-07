@@ -2,10 +2,10 @@ package alixba.vast
 
 import scala.xml.Node
 
-case class Ad(element: AdElement, id: Option[String], sequence: Option[Int]) extends VASTElement[Ad] {
+case class Ad(element: AdElement, id: Option[String], sequence: Option[Int]) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <Ad id={ id } sequence={ sequence }>{ element.toXML }</Ad>
@@ -37,8 +37,7 @@ object Ad extends VASTElementCompanion[Ad] {
 
 }
 
-trait AdElement {
-  self: VASTElement[_] ⇒
+trait AdElement extends VASTElement {
 
   def adSystem: AdSystem
 
@@ -46,11 +45,9 @@ trait AdElement {
 
   def impressions: Seq[Impression]
 
-  def creatives: Seq[Creative[_]]
+  def creatives: Seq[Creative]
 
   def extensions: Option[Seq[Extension]]
-
-  def toXML: Node
 
 }
 

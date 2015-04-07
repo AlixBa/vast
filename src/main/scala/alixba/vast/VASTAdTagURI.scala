@@ -4,10 +4,10 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class VASTAdTagURI(value: URI) extends VASTElement[VASTAdTagURI] {
+case class VASTAdTagURI(value: URI) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <VASTAdTagURI>{ value.asCData }</VASTAdTagURI>

@@ -1,6 +1,6 @@
 package alixba.vast
 
-trait VideoClicks[T] extends VASTElement[T] {
+trait VideoClicks extends VASTElement {
 
   def clicksTracking: Seq[ClickTracking]
 

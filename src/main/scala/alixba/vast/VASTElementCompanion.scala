@@ -30,10 +30,10 @@ trait VASTElementCompanion[T] extends fromXMLImplicits {
 
 }
 
-trait VASTElement[T] extends toXMLImplicits {
+trait VASTElement extends toXMLImplicits {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node
 

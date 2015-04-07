@@ -4,10 +4,10 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class NonLinearClickThrough(value: URI) extends VASTElement[NonLinearClickThrough] {
+case class NonLinearClickThrough(value: URI) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <NonLinearClickThrough>{ value.asCData }</NonLinearClickThrough>

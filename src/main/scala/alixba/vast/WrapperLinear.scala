@@ -4,10 +4,10 @@ import scala.xml.Node
 
 case class WrapperLinear(icons: Option[Seq[Icon]], creativeExtensions: Option[Seq[CreativeExtension]],
                          trackingEvents: Option[Seq[Tracking]], videoClicks: Option[WrapperVideoClicks])
-    extends Linear[WrapperLinear] with WrapperCreativeElement {
+    extends Linear with WrapperCreativeElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val iconsXML = icons.map(n ⇒ <Icons>{ n.map(_.toXML) }</Icons>).toSeq

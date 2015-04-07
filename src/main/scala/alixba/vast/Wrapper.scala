@@ -4,10 +4,10 @@ import scala.xml.Node
 
 case class Wrapper(adSystem: AdSystem, vastAdTagURI: VASTAdTagURI, creatives: Seq[WrapperCreative],
                    error: Option[Error], impressions: Seq[Impression], extensions: Option[Seq[Extension]])
-    extends VASTElement[Wrapper] with AdElement {
+    extends AdElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val adSystemXML = adSystem.toXML

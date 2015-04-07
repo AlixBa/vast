@@ -3,10 +3,10 @@ package alixba.vast
 import scala.xml.Node
 
 case class IconClicks(iconClicksTracking: Seq[IconClickTracking], iconClickThrough: Option[IconClickThrough])
-    extends VASTElement[IconClicks] {
+    extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val iconClicksTrackingXML = iconClicksTracking.map(_.toXML)

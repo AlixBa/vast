@@ -1,6 +1,6 @@
 package alixba.vast
 
-trait Linear[T] extends VASTElement[T] {
+trait Linear extends VASTElement {
 
   def creativeExtensions: Option[Seq[CreativeExtension]]
 
@@ -8,6 +8,6 @@ trait Linear[T] extends VASTElement[T] {
 
   def trackingEvents: Option[Seq[Tracking]]
 
-  def videoClicks: Option[VideoClicks[_]]
+  def videoClicks: Option[VideoClicks]
 
 }

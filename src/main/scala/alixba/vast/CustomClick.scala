@@ -4,10 +4,10 @@ import java.net.URI
 
 import scala.xml.Node
 
-case class CustomClick(value: URI, id: Option[String]) extends VASTElement[CustomClick] {
+case class CustomClick(value: URI, id: Option[String]) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <CustomClick id={ id }>{ value.asCData }</CustomClick>

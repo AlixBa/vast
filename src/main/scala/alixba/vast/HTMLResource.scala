@@ -5,7 +5,7 @@ import scala.xml.Node
 case class HTMLResource(value: String, xmlEncoded: Option[Boolean]) extends Resource {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <HTMLResource xmlEncoded={ xmlEncoded }>{ value }</HTMLResource>

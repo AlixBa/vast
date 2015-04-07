@@ -2,7 +2,7 @@ package alixba.vast
 
 import scala.xml.Node
 
-trait Resource extends VASTElement[Resource]
+trait Resource extends VASTElement
 
 object Resource extends VASTElementCompanion[Resource] {
 
@@ -17,9 +17,9 @@ object Resource extends VASTElementCompanion[Resource] {
    * }}}
    */
   def fromXML(node: Node): Resource = {
-    val html: Option[Resource] = (node \ "HTMLResource").headOption.map(HTMLResource.fromXML)
-    val iframe: Option[Resource] = (node \ "IFrameResource").headOption.map(IFrameResource.fromXML)
-    val static: Option[Resource] = (node \ "StaticResource").headOption.map(StaticResource.fromXML)
+    val html = (node \ "HTMLResource").headOption.map(HTMLResource.fromXML)
+    val iframe = (node \ "IFrameResource").headOption.map(IFrameResource.fromXML)
+    val static = (node \ "StaticResource").headOption.map(StaticResource.fromXML)
 
     html.getOrElse(
       iframe.getOrElse(

@@ -7,7 +7,7 @@ import scala.xml.Node
 case class IFrameResource(value: URI) extends Resource {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <IFrameResource>{ value.asCData }</IFrameResource>

@@ -5,10 +5,10 @@ import scala.xml.Node
 case class InLineLinear(duration: Duration, icons: Option[Seq[Icon]], creativeExtensions: Option[Seq[CreativeExtension]],
                         trackingEvents: Option[Seq[Tracking]], adParameters: Option[AdParameters],
                         videoClicks: Option[InLineVideoClicks], mediaFiles: Option[Seq[MediaFile]],
-                        skipoffset: Option[String]) extends Linear[InLineLinear] with InLineCreativeElement {
+                        skipoffset: Option[String]) extends Linear with InLineCreativeElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val durationXML = duration.toXML

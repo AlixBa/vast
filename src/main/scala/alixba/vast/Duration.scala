@@ -4,10 +4,10 @@ import javax.xml.datatype.XMLGregorianCalendar
 
 import scala.xml.Node
 
-case class Duration(value: XMLGregorianCalendar) extends VASTElement[Duration] {
+case class Duration(value: XMLGregorianCalendar) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node =
     <Duration>{ value }</Duration>

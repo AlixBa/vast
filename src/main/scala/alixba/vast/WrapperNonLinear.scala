@@ -10,10 +10,10 @@ case class WrapperNonLinear(
     height: Option[Int], expandedWidth: Option[Int], expandedHeight: Option[Int],
     scalable: Option[Boolean], maintainAspectRatio: Option[Boolean],
     minSuggestedDuration: Option[XMLGregorianCalendar], apiFramework: Option[String]
-) extends NonLinear[WrapperNonLinear] {
+) extends NonLinear {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val minSuggestedDurationXML = minSuggestedDuration.map(_.toXMLFormat)

@@ -11,10 +11,10 @@ case class InLineNonLinear(element: Resource, width: Int, height: Int,
                            adParameters:            Option[AdParameters], id: Option[String], expandedWidth: Option[Int],
                            expandedHeight: Option[Int], scalable: Option[Boolean], maintainAspectRatio: Option[Boolean],
                            minSuggestedDuration: Option[XMLGregorianCalendar],
-                           apiFramework:         Option[String]) extends NonLinear[InLineNonLinear] {
+                           apiFramework:         Option[String]) extends NonLinear {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val elementXML = element.toXML

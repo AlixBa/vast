@@ -3,10 +3,10 @@ package alixba.vast
 import scala.xml.Node
 
 case class InLineVideoClicks(clickThrough: Option[ClickThrough], clicksTracking: Seq[ClickTracking],
-                             customClicks: Seq[CustomClick]) extends VideoClicks[InLineVideoClicks] {
+                             customClicks: Seq[CustomClick]) extends VideoClicks {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val clickThroughXML = clickThrough.map(_.toXML).toSeq

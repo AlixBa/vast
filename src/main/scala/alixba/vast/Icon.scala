@@ -7,10 +7,10 @@ import scala.xml.Node
 case class Icon(element: Resource, program: String, width: Int, height: Int, xPosition: String, yPosition: String,
                 iconClicks: Option[IconClicks], iconViewTracking: Seq[IconViewTracking],
                 offset: Option[XMLGregorianCalendar], duration: Option[XMLGregorianCalendar],
-                apiFramework: Option[String]) extends VASTElement[Icon] {
+                apiFramework: Option[String]) extends VASTElement {
 
   /**
-   * Serializes this T to a Node.
+   * Serializes this to a Node.
    */
   def toXML: Node = {
     val elementXML = element.toXML
