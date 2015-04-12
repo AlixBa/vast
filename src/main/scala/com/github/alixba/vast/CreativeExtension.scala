@@ -8,7 +8,7 @@ case class CreativeExtension(nodes: Seq[Node], attributes: Map[String, String]) 
    * Serializes this to a Node.
    */
   def toXML: Node =
-    <CreativeExtension>{ nodes }</CreativeExtension> % attributes.asMetaData
+    <CreativeExtension>{ preventEscaping(nodes) }</CreativeExtension> % attributes.asMetaData
 
 }
 

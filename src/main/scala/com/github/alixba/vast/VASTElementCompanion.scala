@@ -3,7 +3,7 @@ package com.github.alixba.vast
 import javax.xml.datatype.{ DatatypeFactory, XMLGregorianCalendar }
 
 import scala.language.implicitConversions
-import scala.xml.{ Node, Text, XML }
+import scala.xml._
 
 trait VASTElementCompanion[T] extends fromXMLImplicits {
 
@@ -36,6 +36,27 @@ trait VASTElement extends toXMLImplicits {
    * Serializes this to a Node.
    */
   def toXML: Node
+
+  /**
+   * Use this method to prevent Text nodes to be escaped
+   * while transformed to string. Used because XML.fromString
+   * does not keep the CData format.
+   */
+  protected def preventEscaping(nodes: Seq[Node]): Seq[Node] = {
+    nodes.map({
+      case e @ Elem(p, l, a, s, _*)          ⇒ Elem(p, l, a, s, true, preventEscaping(e.child): _*)
+      case Group(n)                          ⇒ Group(preventEscaping(n))
+      case Text(str) if shouldBeEncoded(str) ⇒ PCData(str)
+      case n                                 ⇒ n
+    })
+  }
+
+  protected def shouldBeEncoded(str: String): Boolean = {
+    str.contains("<") ||
+      str.contains(">") ||
+      str.contains("&") ||
+      str.contains("\"")
+  }
 
 }
 

@@ -8,7 +8,7 @@ case class Extension(nodes: Seq[Node], attributes: Map[String, String]) extends 
    * Serializes this to a Node.
    */
   def toXML: Node =
-    <Extension>{ nodes }</Extension> % attributes.asMetaData
+    <Extension>{ preventEscaping(nodes) }</Extension> % attributes.asMetaData
 
 }
 
