@@ -28,7 +28,7 @@ object WrapperCompanionAds extends VASTElementCompanion[WrapperCompanionAds] {
    * }}}
    */
   def fromXML(node: Node): WrapperCompanionAds = {
-    val companions = (node \ "Companion").toSeq.map(WrapperCompanion.fromXML)
+    val companions = (node \ "Companion").map(WrapperCompanion.fromXML)
 
     WrapperCompanionAds(companions)
   }

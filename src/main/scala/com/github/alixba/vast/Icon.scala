@@ -40,7 +40,7 @@ object Icon extends VASTElementCompanion[Icon] {
   def fromXML(node: Node): Icon = {
     val element = Resource.fromXML(node)
     val iconClicks = (node \ "IconClicks").headOption.map(IconClicks.fromXML)
-    val iconViewTracking = (node \ "IconViewTracking").toSeq.map(IconViewTracking.fromXML)
+    val iconViewTracking = (node \ "IconViewTracking").map(IconViewTracking.fromXML)
     val program = (node \ "@program").headOption.getOrElseMissingException("program")
     val width = (node \ "@width").headOption.getOrElseMissingException("width")
     val height = (node \ "@height").headOption.getOrElseMissingException("height")

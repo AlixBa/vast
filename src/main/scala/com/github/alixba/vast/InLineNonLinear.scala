@@ -46,8 +46,8 @@ object InLineNonLinear extends VASTElementCompanion[InLineNonLinear] {
   def fromXML(node: Node): InLineNonLinear = {
     val element = Resource.fromXML(node)
     val creativeExtensions = (node \ "CreativeExtensions")
-      .headOption.map(n ⇒ (n \ "CreativeExtension").toSeq.map(CreativeExtension.fromXML))
-    val nonLinearClicksTracking = (node \ "NonLinearClickTracking").toSeq.map(NonLinearClickTracking.fromXML)
+      .headOption.map(n ⇒ (n \ "CreativeExtension").map(CreativeExtension.fromXML))
+    val nonLinearClicksTracking = (node \ "NonLinearClickTracking").map(NonLinearClickTracking.fromXML)
     val nonLinearClickThrough = (node \ "NonLinearClickThrough").headOption.map(NonLinearClickThrough.fromXML)
     val adParameters = (node \ "AdParameters").headOption.map(AdParameters.fromXML)
     val id = (node \ "@id").headOption

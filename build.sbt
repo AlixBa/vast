@@ -1,5 +1,5 @@
 name := "VAST"
-version := "3.0.2"
+version := "3.0.3"
 homepage := Some(url("http://github.com/AlixBa/vast"))
 
 organization := "com.github.alixba"
@@ -13,4 +13,4 @@ scalacOptions := Seq(
 
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "2.2.4" % "test",
-  "org.scala-lang.modules" %% "scala-xml" % "1.0.3")
+  "org.scala-lang.modules" %% "scala-xml" % "1.0.4")

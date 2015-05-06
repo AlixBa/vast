@@ -31,7 +31,7 @@ object VAST extends VASTElementCompanion[VAST] {
    * }}}
    */
   def fromXML(node: Node): VAST = {
-    val ads = (node \ "Ad").toSeq.map(Ad.fromXML)
+    val ads = (node \ "Ad").map(Ad.fromXML)
     val version = (node \ "@version").headOption.getOrElseMissingException("version")
 
     VAST(version, ads)

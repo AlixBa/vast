@@ -41,16 +41,14 @@ object InLineLinear extends VASTElementCompanion[InLineLinear] {
    * }}}
    */
   def fromXML(node: Node): InLineLinear = {
-    val icons = (node \ "Icons").headOption.map(n ⇒ (n \ "Icon").toSeq.map(Icon.fromXML))
+    val icons = (node \ "Icons").headOption.map(n ⇒ (n \ "Icon").map(Icon.fromXML))
     val creativeExtensions = (node \ "CreativeExtensions")
-      .headOption.map(n ⇒ (n \ "CreativeExtension").toSeq.map(CreativeExtension.fromXML))
+      .headOption.map(n ⇒ (n \ "CreativeExtension").map(CreativeExtension.fromXML))
     val duration = (node \ "Duration").headOption.map(Duration.fromXML).getOrElseMissingException("Duration")
-    val trackingEvents = (node \ "TrackingEvents")
-      .headOption.map(n ⇒ (n \ "Tracking").toSeq.map(Tracking.fromXML))
+    val trackingEvents = (node \ "TrackingEvents").headOption.map(n ⇒ (n \ "Tracking").map(Tracking.fromXML))
     val adParameters = (node \ "AdParameters").headOption.map(AdParameters.fromXML)
     val videoClicks = (node \ "VideoClicks").headOption.map(InLineVideoClicks.fromXML)
-    val mediaFiles = (node \ "MediaFiles")
-      .headOption.map(n ⇒ (n \ "MediaFile").toSeq.map(MediaFile.fromXML))
+    val mediaFiles = (node \ "MediaFiles").headOption.map(n ⇒ (n \ "MediaFile").map(MediaFile.fromXML))
     val skipoffset = (node \ "@skipoffset").headOption
 
     InLineLinear(icons, creativeExtensions, duration, trackingEvents, adParameters, videoClicks, mediaFiles, skipoffset)

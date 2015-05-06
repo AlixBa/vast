@@ -30,8 +30,8 @@ object InLineNonLinearAds extends VASTElementCompanion[InLineNonLinearAds] {
    * }}}
    */
   def fromXML(node: Node): InLineNonLinearAds = {
-    val trackingEvents = (node \ "TrackingEvents").headOption.map(n ⇒ (n \ "Tracking").toSeq.map(Tracking.fromXML))
-    val nonLinears = (node \ "NonLinear").toSeq.map(InLineNonLinear.fromXML)
+    val trackingEvents = (node \ "TrackingEvents").headOption.map(n ⇒ (n \ "Tracking").map(Tracking.fromXML))
+    val nonLinears = (node \ "NonLinear").map(InLineNonLinear.fromXML)
 
     InLineNonLinearAds(trackingEvents, nonLinears)
   }

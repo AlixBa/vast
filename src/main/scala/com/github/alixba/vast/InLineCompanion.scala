@@ -44,9 +44,8 @@ object InLineCompanion extends VASTElementCompanion[InLineCompanion] {
   def fromXML(node: Node): InLineCompanion = {
     val element = Resource.fromXML(node)
     val creativeExtensions = (node \ "CreativeExtensions")
-      .headOption.map(n ⇒ (n \ "CreativeExtension").toSeq.map(CreativeExtension.fromXML))
-    val trackingEvents = (node \ "TrackingEvents")
-      .headOption.map(n ⇒ (n \ "Tracking").toSeq.map(Tracking.fromXML))
+      .headOption.map(n ⇒ (n \ "CreativeExtension").map(CreativeExtension.fromXML))
+    val trackingEvents = (node \ "TrackingEvents").headOption.map(n ⇒ (n \ "Tracking").map(Tracking.fromXML))
     val companionClickThrough = (node \ "CompanionClickThrough").headOption.map(CompanionClickThrough.fromXML)
     val altText = (node \ "AltText").headOption.map(AltText.fromXML)
     val adParameters = (node \ "AdParameters").headOption.map(AdParameters.fromXML)

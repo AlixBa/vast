@@ -50,9 +50,9 @@ object InLine extends VASTElementCompanion[InLine] {
     val pricing = (node \ "Pricing").headOption.map(Pricing.fromXML)
     val survey = (node \ "Survey").headOption.map(Survey.fromXML)
     val error = (node \ "Error").headOption.map(Error.fromXML)
-    val impressions = (node \ "Impression").toSeq.map(Impression.fromXML)
-    val creatives = (node \ "Creatives" \ "Creative").toSeq.map(InLineCreative.fromXML)
-    val extensions = (node \ "Extensions").headOption.map(n ⇒ (n \ "Extension").toSeq.map(Extension.fromXML))
+    val impressions = (node \ "Impression").map(Impression.fromXML)
+    val creatives = (node \ "Creatives" \ "Creative").map(InLineCreative.fromXML)
+    val extensions = (node \ "Extensions").headOption.map(n ⇒ (n \ "Extension").map(Extension.fromXML))
 
     InLine(adSystem, adTitle, description, advertiser, pricing, survey, error, impressions, creatives, extensions)
   }

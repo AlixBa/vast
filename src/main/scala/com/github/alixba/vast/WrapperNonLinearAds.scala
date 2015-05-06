@@ -30,8 +30,8 @@ object WrapperNonLinearAds extends VASTElementCompanion[WrapperNonLinearAds] {
    * }}}
    */
   def fromXML(node: Node): WrapperNonLinearAds = {
-    val trackingEvents = (node \ "TrackingEvents").headOption.map(n ⇒ (n \ "Tracking").toSeq.map(Tracking.fromXML))
-    val nonLinears = (node \ "NonLinear").toSeq.map(WrapperNonLinear.fromXML)
+    val trackingEvents = (node \ "TrackingEvents").headOption.map(n ⇒ (n \ "Tracking").map(Tracking.fromXML))
+    val nonLinears = (node \ "NonLinear").map(WrapperNonLinear.fromXML)
 
     WrapperNonLinearAds(trackingEvents, nonLinears)
   }

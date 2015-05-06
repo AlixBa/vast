@@ -32,8 +32,8 @@ object InLineVideoClicks extends VASTElementCompanion[InLineVideoClicks] {
    */
   def fromXML(node: Node): InLineVideoClicks = {
     val clickThrough = (node \ "ClickThrough").headOption.map(ClickThrough.fromXML)
-    val clickTracking = (node \ "ClickTracking").toSeq.map(ClickTracking.fromXML)
-    val customClicks = (node \ "CustomClick").toSeq.map(CustomClick.fromXML)
+    val clickTracking = (node \ "ClickTracking").map(ClickTracking.fromXML)
+    val customClicks = (node \ "CustomClick").map(CustomClick.fromXML)
 
     InLineVideoClicks(clickThrough, clickTracking, customClicks)
   }

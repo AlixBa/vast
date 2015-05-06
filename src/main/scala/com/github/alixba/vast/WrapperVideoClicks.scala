@@ -30,8 +30,8 @@ object WrapperVideoClicks extends VASTElementCompanion[WrapperVideoClicks] {
    * }}}
    */
   def fromXML(node: Node): WrapperVideoClicks = {
-    val clickTracking = (node \ "ClickTracking").toSeq.map(ClickTracking.fromXML)
-    val customClicks = (node \ "CustomClick").toSeq.map(CustomClick.fromXML)
+    val clickTracking = (node \ "ClickTracking").map(ClickTracking.fromXML)
+    val customClicks = (node \ "CustomClick").map(CustomClick.fromXML)
 
     WrapperVideoClicks(clickTracking, customClicks)
   }

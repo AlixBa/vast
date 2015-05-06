@@ -41,9 +41,9 @@ object Wrapper extends VASTElementCompanion[Wrapper] {
     val vastAdTagURI = (node \ "VASTAdTagURI")
       .headOption.map(VASTAdTagURI.fromXML).getOrElseMissingException("VASTAdTagURI")
     val error = (node \ "Error").headOption.map(Error.fromXML)
-    val impressions = (node \ "Impression").toSeq.map(Impression.fromXML)
-    val creatives = (node \ "Creatives" \ "Creative").toSeq.map(WrapperCreative.fromXML)
-    val extensions = (node \ "Extensions").headOption.map(n ⇒ (n \ "Extension").toSeq.map(Extension.fromXML))
+    val impressions = (node \ "Impression").map(Impression.fromXML)
+    val creatives = (node \ "Creatives" \ "Creative").map(WrapperCreative.fromXML)
+    val extensions = (node \ "Extensions").headOption.map(n ⇒ (n \ "Extension").map(Extension.fromXML))
 
     Wrapper(adSystem, vastAdTagURI, error, impressions, creatives, extensions)
   }

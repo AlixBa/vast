@@ -35,10 +35,9 @@ object WrapperLinear extends VASTElementCompanion[WrapperLinear] {
    */
   def fromXML(node: Node): WrapperLinear = {
     val creativeExtensions = (node \ "CreativeExtensions")
-      .headOption.map(n ⇒ (n \ "CreativeExtension").toSeq.map(CreativeExtension.fromXML))
-    val icons = (node \ "Icons").headOption.map(n ⇒ (n \ "Icon").toSeq.map(Icon.fromXML))
-    val trackingEvents = (node \ "TrackingEvents")
-      .headOption.map(n ⇒ (n \ "Tracking").toSeq.map(Tracking.fromXML))
+      .headOption.map(n ⇒ (n \ "CreativeExtension").map(CreativeExtension.fromXML))
+    val icons = (node \ "Icons").headOption.map(n ⇒ (n \ "Icon").map(Icon.fromXML))
+    val trackingEvents = (node \ "TrackingEvents").headOption.map(n ⇒ (n \ "Tracking").map(Tracking.fromXML))
     val videoClicks = (node \ "VideoClicks").headOption.map(WrapperVideoClicks.fromXML)
 
     WrapperLinear(creativeExtensions, icons, trackingEvents, videoClicks)

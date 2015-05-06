@@ -30,7 +30,7 @@ object IconClicks extends VASTElementCompanion[IconClicks] {
    * }}}
    */
   def fromXML(node: Node): IconClicks = {
-    val iconClicksTracking = (node \ "IconClickTracking").toSeq.map(IconClickTracking.fromXML)
+    val iconClicksTracking = (node \ "IconClickTracking").map(IconClickTracking.fromXML)
     val iconClickThrough = (node \ "IconClickThrough").headOption.map(IconClickThrough.fromXML)
 
     IconClicks(iconClicksTracking, iconClickThrough)

@@ -30,7 +30,7 @@ object InLineCompanionAds extends VASTElementCompanion[InLineCompanionAds] {
    * }}}
    */
   def fromXML(node: Node): InLineCompanionAds = {
-    val companions = (node \ "Companion").toSeq.map(InLineCompanion.fromXML)
+    val companions = (node \ "Companion").map(InLineCompanion.fromXML)
     val required = (node \ "@required").headOption.map(n ⇒ Required.fromString(n.text))
 
     InLineCompanionAds(companions, required)
