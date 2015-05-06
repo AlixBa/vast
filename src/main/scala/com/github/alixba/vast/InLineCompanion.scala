@@ -2,12 +2,12 @@ package com.github.alixba.vast
 
 import scala.xml.Node
 
-case class InLineCompanion(width: Int, height: Int, element: Resource,
-                           creativeExtensions: Option[Seq[CreativeExtension]], trackingEvents: Option[Seq[Tracking]],
-                           companionClickThrough: Option[CompanionClickThrough], altText: Option[AltText],
-                           adParameters: Option[AdParameters], id: Option[String], assetWidth: Option[Int],
-                           assetHeight: Option[Int], expandedWidth: Option[Int], expandedHeight: Option[Int],
-                           apiFramework: Option[String], adSlotId: Option[String]) extends Companion {
+case class InLineCompanion(element: Resource, creativeExtensions: Option[Seq[CreativeExtension]],
+                           trackingEvents: Option[Seq[Tracking]], companionClickThrough: Option[CompanionClickThrough],
+                           altText: Option[AltText], adParameters: Option[AdParameters], id: Option[String], width: Int,
+                           height: Int, assetWidth: Option[Int], assetHeight: Option[Int], expandedWidth: Option[Int],
+                           expandedHeight: Option[Int], apiFramework: Option[String], adSlotId: Option[String])
+    extends Companion {
 
   /**
    * Serializes this to a Node.
@@ -21,7 +21,7 @@ case class InLineCompanion(width: Int, height: Int, element: Resource,
     val altTextXML = altText.map(_.toXML).toSeq
     val adParametersXML = adParameters.map(_.toXML).toSeq
 
-    <Companion width={ width } height={ height } id={ id } assetWidth={ assetWidth } assetHeight={ assetHeight } expandedWidth={ expandedWidth } expandedHeight={ expandedHeight } apiFramework={ apiFramework } adSlotId={ adSlotId }>{ elementXML }{ creativeExtensionsXML }{ trackingEventsXML }{ companionClickThroughXML }{ altTextXML }{ adParametersXML }</Companion>
+    <Companion id={ id } width={ width } height={ height } assetWidth={ assetWidth } assetHeight={ assetHeight } expandedWidth={ expandedWidth } expandedHeight={ expandedHeight } apiFramework={ apiFramework } adSlotId={ adSlotId }>{ elementXML }{ creativeExtensionsXML }{ trackingEventsXML }{ companionClickThroughXML }{ altTextXML }{ adParametersXML }</Companion>
   }
 
 }
@@ -29,7 +29,7 @@ case class InLineCompanion(width: Int, height: Int, element: Resource,
 object InLineCompanion extends VASTElementCompanion[InLineCompanion] {
 
   def apply(width: Int, height: Int, element: Resource): InLineCompanion =
-    InLineCompanion(width, height, element, None, None, None, None, None, None, None, None, None, None, None, None)
+    InLineCompanion(element, None, None, None, None, None, None, width, height, None, None, None, None, None, None)
 
   /**
    * Deserializes a Node to a T.
@@ -42,8 +42,6 @@ object InLineCompanion extends VASTElementCompanion[InLineCompanion] {
    * }}}
    */
   def fromXML(node: Node): InLineCompanion = {
-    val width = (node \ "@width").headOption.getOrElseMissingException("width")
-    val height = (node \ "@height").headOption.getOrElseMissingException("height")
     val element = Resource.fromXML(node)
     val creativeExtensions = (node \ "CreativeExtensions")
       .headOption.map(n ⇒ (n \ "CreativeExtension").toSeq.map(CreativeExtension.fromXML))
@@ -53,6 +51,8 @@ object InLineCompanion extends VASTElementCompanion[InLineCompanion] {
     val altText = (node \ "AltText").headOption.map(AltText.fromXML)
     val adParameters = (node \ "AdParameters").headOption.map(AdParameters.fromXML)
     val id = (node \ "@id").headOption
+    val width = (node \ "@width").headOption.getOrElseMissingException("width")
+    val height = (node \ "@height").headOption.getOrElseMissingException("height")
     val assetWidth = (node \ "@assetWidth").headOption
     val assetHeight = (node \ "@assetHeight").headOption
     val expandedWidth = (node \ "@expandedWidth").headOption
@@ -60,8 +60,8 @@ object InLineCompanion extends VASTElementCompanion[InLineCompanion] {
     val apiFramework = (node \ "@apiFramework").headOption
     val adSlotId = (node \ "@adSlotId").headOption
 
-    InLineCompanion(width, height, element, creativeExtensions, trackingEvents, companionClickThrough, altText,
-      adParameters, id, assetWidth, assetHeight, expandedWidth, expandedHeight, apiFramework, adSlotId)
+    InLineCompanion(element, creativeExtensions, trackingEvents, companionClickThrough, altText, adParameters, id,
+      width, height, assetWidth, assetHeight, expandedWidth, expandedHeight, apiFramework, adSlotId)
   }
 
 }

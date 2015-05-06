@@ -2,13 +2,13 @@ package com.github.alixba.vast
 
 import scala.xml.Node
 
-case class WrapperCompanion(width: Int, height: Int, element: Resource,
-                            creativeExtensions: Option[Seq[CreativeExtension]], trackingEvents: Option[Seq[Tracking]],
-                            companionClickThrough:  Option[CompanionClickThrough],
+case class WrapperCompanion(element: Resource, creativeExtensions: Option[Seq[CreativeExtension]],
+                            trackingEvents: Option[Seq[Tracking]], companionClickThrough: Option[CompanionClickThrough],
                             companionClickTracking: Seq[CompanionClickTracking], altText: Option[AltText],
-                            adParameters: Option[AdParameters], id: Option[String], assetWidth: Option[Int],
-                            assetHeight: Option[Int], expandedWidth: Option[Int], expandedHeight: Option[Int],
-                            apiFramework: Option[String], adSlotId: Option[String]) extends Companion {
+                            adParameters: Option[AdParameters], id: Option[String], width: Int, height: Int,
+                            assetWidth: Option[Int], assetHeight: Option[Int], expandedWidth: Option[Int],
+                            expandedHeight: Option[Int], apiFramework: Option[String], adSlotId: Option[String])
+    extends Companion {
 
   /**
    * Serializes this to a Node.
@@ -23,7 +23,7 @@ case class WrapperCompanion(width: Int, height: Int, element: Resource,
     val altTextXML = altText.map(_.toXML).toSeq
     val adParametersXML = adParameters.map(_.toXML).toSeq
 
-    <Companion width={ width } height={ height } id={ id } assetWidth={ assetWidth } assetHeight={ assetHeight } expandedWidth={ expandedWidth } expandedHeight={ expandedHeight } apiFramework={ apiFramework } adSlotId={ adSlotId }>{ elementXML }{ creativeExtensionsXML }{ trackingEventsXML }{ companionClickThroughXML }{ companionClickTrackingXML }{ altTextXML }{ adParametersXML }</Companion>
+    <Companion id={ id } width={ width } height={ height } assetWidth={ assetWidth } assetHeight={ assetHeight } expandedWidth={ expandedWidth } expandedHeight={ expandedHeight } apiFramework={ apiFramework } adSlotId={ adSlotId }>{ elementXML }{ creativeExtensionsXML }{ trackingEventsXML }{ companionClickThroughXML }{ companionClickTrackingXML }{ altTextXML }{ adParametersXML }</Companion>
   }
 
 }
@@ -31,7 +31,7 @@ case class WrapperCompanion(width: Int, height: Int, element: Resource,
 object WrapperCompanion extends VASTElementCompanion[WrapperCompanion] {
 
   def apply(width: Int, height: Int, element: Resource): WrapperCompanion =
-    WrapperCompanion(width, height, element, None, None, None, Seq.empty, None, None, None, None, None, None, None, None, None)
+    WrapperCompanion(element, None, None, None, Seq.empty, None, None, None, width, height, None, None, None, None, None, None)
 
   /**
    * Deserializes a Node to a T.
@@ -44,8 +44,6 @@ object WrapperCompanion extends VASTElementCompanion[WrapperCompanion] {
    * }}}
    */
   def fromXML(node: Node): WrapperCompanion = {
-    val width = (node \ "@width").headOption.getOrElseMissingException("width")
-    val height = (node \ "@height").headOption.getOrElseMissingException("height")
     val element = Resource.fromXML(node)
     val creativeExtensions = (node \ "CreativeExtensions")
       .headOption.map(n ⇒ (n \ "CreativeExtension").toSeq.map(CreativeExtension.fromXML))
@@ -56,6 +54,8 @@ object WrapperCompanion extends VASTElementCompanion[WrapperCompanion] {
     val altText = (node \ "AltText").headOption.map(AltText.fromXML)
     val adParameters = (node \ "AdParameters").headOption.map(AdParameters.fromXML)
     val id = (node \ "@id").headOption
+    val width = (node \ "@width").headOption.getOrElseMissingException("width")
+    val height = (node \ "@height").headOption.getOrElseMissingException("height")
     val assetWidth = (node \ "@assetWidth").headOption
     val assetHeight = (node \ "@assetHeight").headOption
     val expandedWidth = (node \ "@expandedWidth").headOption
@@ -63,9 +63,9 @@ object WrapperCompanion extends VASTElementCompanion[WrapperCompanion] {
     val apiFramework = (node \ "@apiFramework").headOption
     val adSlotId = (node \ "@adSlotId").headOption
 
-    WrapperCompanion(width, height, element, creativeExtensions, trackingEvents, companionClickThrough,
-      companionClickTracking, altText, adParameters, id, assetWidth, assetHeight, expandedWidth, expandedHeight,
-      apiFramework, adSlotId)
+    WrapperCompanion(element, creativeExtensions, trackingEvents, companionClickThrough, companionClickTracking,
+      altText, adParameters, id, width, height, assetWidth, assetHeight, expandedWidth, expandedHeight, apiFramework,
+      adSlotId)
   }
 
 }

@@ -2,9 +2,8 @@ package com.github.alixba.vast
 
 import scala.xml.Node
 
-case class Wrapper(adSystem: AdSystem, vastAdTagURI: VASTAdTagURI, creatives: Seq[WrapperCreative],
-                   error: Option[Error], impressions: Seq[Impression], extensions: Option[Seq[Extension]])
-    extends AdElement {
+case class Wrapper(adSystem: AdSystem, vastAdTagURI: VASTAdTagURI, error: Option[Error], impressions: Seq[Impression],
+                   creatives: Seq[WrapperCreative], extensions: Option[Seq[Extension]]) extends AdElement {
 
   /**
    * Serializes this to a Node.
@@ -12,12 +11,12 @@ case class Wrapper(adSystem: AdSystem, vastAdTagURI: VASTAdTagURI, creatives: Se
   def toXML: Node = {
     val adSystemXML = adSystem.toXML
     val vastAdTagURIXML = vastAdTagURI.toXML
-    val creativesXML = creatives.map(_.toXML)
     val errorXML = error.map(_.toXML).toSeq
     val impressionXML = impressions.map(_.toXML)
+    val creativesXML = creatives.map(_.toXML)
     val extensionsXML = extensions.map(n ⇒ <Extensions>{ n.map(_.toXML) }</Extensions>).toSeq
 
-    <Wrapper>{ adSystemXML }{ vastAdTagURIXML }{ errorXML }<Creatives>{ creativesXML }</Creatives>{ impressionXML }{ extensionsXML }</Wrapper>
+    <Wrapper>{ adSystemXML }{ vastAdTagURIXML }{ errorXML }{ impressionXML }<Creatives>{ creativesXML }</Creatives>{ extensionsXML }</Wrapper>
   }
 
 }
@@ -25,7 +24,7 @@ case class Wrapper(adSystem: AdSystem, vastAdTagURI: VASTAdTagURI, creatives: Se
 object Wrapper extends VASTElementCompanion[Wrapper] {
 
   def apply(adSystem: AdSystem, vastAdTagURI: VASTAdTagURI, creatives: Seq[WrapperCreative]): Wrapper =
-    Wrapper(adSystem, vastAdTagURI, creatives, None, Seq.empty, None)
+    Wrapper(adSystem, vastAdTagURI, None, Seq.empty, creatives, None)
 
   /**
    * Deserializes a Node to a T.
@@ -41,12 +40,12 @@ object Wrapper extends VASTElementCompanion[Wrapper] {
     val adSystem = (node \ "AdSystem").headOption.map(AdSystem.fromXML).getOrElseMissingException("AdSystem")
     val vastAdTagURI = (node \ "VASTAdTagURI")
       .headOption.map(VASTAdTagURI.fromXML).getOrElseMissingException("VASTAdTagURI")
-    val creatives = (node \ "Creatives" \ "Creative").toSeq.map(WrapperCreative.fromXML)
     val error = (node \ "Error").headOption.map(Error.fromXML)
     val impressions = (node \ "Impression").toSeq.map(Impression.fromXML)
+    val creatives = (node \ "Creatives" \ "Creative").toSeq.map(WrapperCreative.fromXML)
     val extensions = (node \ "Extensions").headOption.map(n ⇒ (n \ "Extension").toSeq.map(Extension.fromXML))
 
-    Wrapper(adSystem, vastAdTagURI, creatives, error, impressions, extensions)
+    Wrapper(adSystem, vastAdTagURI, error, impressions, creatives, extensions)
   }
 
 }

@@ -2,8 +2,8 @@ package com.github.alixba.vast
 
 import scala.xml.Node
 
-case class InLineLinear(duration: Duration, icons: Option[Seq[Icon]], creativeExtensions: Option[Seq[CreativeExtension]],
-                        trackingEvents: Option[Seq[Tracking]], adParameters: Option[AdParameters],
+case class InLineLinear(icons: Option[Seq[Icon]], creativeExtensions: Option[Seq[CreativeExtension]],
+                        duration: Duration, trackingEvents: Option[Seq[Tracking]], adParameters: Option[AdParameters],
                         videoClicks: Option[InLineVideoClicks], mediaFiles: Option[Seq[MediaFile]],
                         skipoffset: Option[String]) extends Linear with InLineCreativeElement {
 
@@ -11,16 +11,16 @@ case class InLineLinear(duration: Duration, icons: Option[Seq[Icon]], creativeEx
    * Serializes this to a Node.
    */
   def toXML: Node = {
-    val durationXML = duration.toXML
     val iconsXML = icons.map(n ⇒ <Icons>{ n.map(_.toXML) }</Icons>).toSeq
     val creativeExtensionsXML = creativeExtensions
       .map(n ⇒ <CreativeExtensions>{ n.map(_.toXML) }</CreativeExtensions>).toSeq
+    val durationXML = duration.toXML
     val trackingEventsXML = trackingEvents.map(n ⇒ <TrackingEvents>{ n.map(_.toXML) }</TrackingEvents>).toSeq
     val adParametersXML = adParameters.map(_.toXML).toSeq
     val videoClicksXML = videoClicks.map(_.toXML).toSeq
     val mediaFilesXML = mediaFiles.map(n ⇒ <MediaFiles>{ n.map(_.toXML) }</MediaFiles>).toSeq
 
-    <Linear skipoffset={ skipoffset }>{ durationXML }{ iconsXML }{ creativeExtensionsXML }{ trackingEventsXML }{ adParametersXML }{ videoClicksXML }{ mediaFilesXML }</Linear>
+    <Linear skipoffset={ skipoffset }>{ iconsXML }{ creativeExtensionsXML }{ durationXML }{ trackingEventsXML }{ adParametersXML }{ videoClicksXML }{ mediaFilesXML }</Linear>
   }
 
 }
@@ -28,7 +28,7 @@ case class InLineLinear(duration: Duration, icons: Option[Seq[Icon]], creativeEx
 object InLineLinear extends VASTElementCompanion[InLineLinear] {
 
   def apply(duration: Duration): InLineLinear =
-    InLineLinear(duration, None, None, None, None, None, None, None)
+    InLineLinear(None, None, duration, None, None, None, None, None)
 
   /**
    * Deserializes a Node to a T.
@@ -41,10 +41,10 @@ object InLineLinear extends VASTElementCompanion[InLineLinear] {
    * }}}
    */
   def fromXML(node: Node): InLineLinear = {
-    val duration = (node \ "Duration").headOption.map(Duration.fromXML).getOrElseMissingException("Duration")
     val icons = (node \ "Icons").headOption.map(n ⇒ (n \ "Icon").toSeq.map(Icon.fromXML))
     val creativeExtensions = (node \ "CreativeExtensions")
       .headOption.map(n ⇒ (n \ "CreativeExtension").toSeq.map(CreativeExtension.fromXML))
+    val duration = (node \ "Duration").headOption.map(Duration.fromXML).getOrElseMissingException("Duration")
     val trackingEvents = (node \ "TrackingEvents")
       .headOption.map(n ⇒ (n \ "Tracking").toSeq.map(Tracking.fromXML))
     val adParameters = (node \ "AdParameters").headOption.map(AdParameters.fromXML)
@@ -53,7 +53,7 @@ object InLineLinear extends VASTElementCompanion[InLineLinear] {
       .headOption.map(n ⇒ (n \ "MediaFile").toSeq.map(MediaFile.fromXML))
     val skipoffset = (node \ "@skipoffset").headOption
 
-    InLineLinear(duration, icons, creativeExtensions, trackingEvents, adParameters, videoClicks, mediaFiles, skipoffset)
+    InLineLinear(icons, creativeExtensions, duration, trackingEvents, adParameters, videoClicks, mediaFiles, skipoffset)
   }
 
 }

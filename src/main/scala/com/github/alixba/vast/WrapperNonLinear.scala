@@ -18,9 +18,7 @@ case class WrapperNonLinear(
   def toXML: Node = {
     val minSuggestedDurationXML = minSuggestedDuration.map(_.toXMLFormat)
     val creativeExtensionsXML = creativeExtensions
-      .map(n ⇒ <CreativeExtensions>
-                 { n.map(_.toXML) }
-               </CreativeExtensions>).toSeq
+      .map(n ⇒ <CreativeExtensions> { n.map(_.toXML) } </CreativeExtensions>).toSeq
     val nonLinearClicksTrackingXML = nonLinearClicksTracking.map(_.toXML)
 
     <NonLinear id={ id } width={ width } height={ height } expandedWidth={ expandedWidth } expandedHeight={ expandedHeight } scalable={ scalable } maintainAspectRatio={ maintainAspectRatio } minSuggestedDuration={ minSuggestedDurationXML } apiFramework={ apiFramework }>{ creativeExtensionsXML }{ nonLinearClicksTrackingXML } </NonLinear>
