@@ -1,11 +1,15 @@
 package com.github.alixba.vast
 
 import javax.xml.datatype.{ DatatypeFactory, XMLGregorianCalendar }
+import javax.xml.parsers.SAXParserFactory
 
 import scala.language.implicitConversions
 import scala.xml._
 
 object VASTElementCompanion {
+
+  lazy val saxParserFactory = SAXParserFactory.newInstance()
+  saxParserFactory.setNamespaceAware(false)
 
   lazy val datatypeFactory = DatatypeFactory.newInstance()
 
@@ -19,8 +23,12 @@ trait VASTElementCompanion[T] extends fromXMLImplicits {
    * Why fromXML? because it is way simpler
    * to transform Node -> T than String -> T.
    */
-  def fromString(string: String): T =
-    fromXML(XML.loadString(string))
+  def fromString(string: String): T = {
+    // don't recreate Factory every time
+    val saxParser = VASTElementCompanion.saxParserFactory.newSAXParser()
+
+    fromXML(XML.withSAXParser(saxParser).loadString(string))
+  }
 
   /**
    * Deserializes a Node to a T.
