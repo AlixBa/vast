@@ -5,4 +5,4 @@ package com.github.alixba.vast
  * element is missing in the XML.
  */
 case class MissingElementException(elems: String*)
-  extends RuntimeException(elems.mkString(" or "))
+  extends RuntimeException("Missing: " + elems.mkString(" or "))

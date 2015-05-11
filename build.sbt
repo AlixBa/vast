@@ -1,5 +1,5 @@
 name := "VAST"
-version := "3.0.3"
+version := "3.0.4"
 homepage := Some(url("http://github.com/AlixBa/vast"))
 
 organization := "com.github.alixba"
