@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class NonLinearClickThrough(value: URI) extends VASTElement {
+case class NonLinearClickThrough(value: String) extends VASTElement {
 
   /**
    * Serializes this to a Node.
@@ -27,6 +25,6 @@ object NonLinearClickThrough extends VASTElementCompanion[NonLinearClickThrough]
    * }}}
    */
   def fromXML(node: Node): NonLinearClickThrough =
-    NonLinearClickThrough(URI.create(node.text))
+    NonLinearClickThrough(node.text)
 
 }

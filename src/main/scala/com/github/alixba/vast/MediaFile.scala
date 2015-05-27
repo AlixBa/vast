@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class MediaFile(value: URI, id: Option[String], delivery: Delivery, `type`: String, bitrate: Option[Int],
+case class MediaFile(value: String, id: Option[String], delivery: Delivery, `type`: String, bitrate: Option[Int],
                      minBitrate: Option[Int], maxBitrate: Option[Int], width: Int, height: Int,
                      scalable: Option[Boolean], maintainAspectRatio: Option[Boolean], apiFramework: Option[String],
                      codec: Option[String]) extends VASTElement {
@@ -19,7 +17,7 @@ case class MediaFile(value: URI, id: Option[String], delivery: Delivery, `type`:
 
 object MediaFile extends VASTElementCompanion[MediaFile] {
 
-  def apply(value: URI, delivery: Delivery, `type`: String, width: Int, height: Int): MediaFile =
+  def apply(value: String, delivery: Delivery, `type`: String, width: Int, height: Int): MediaFile =
     MediaFile(value, None, delivery, `type`, None, None, None, width, height, None, None, None, None)
 
   /**
@@ -33,7 +31,7 @@ object MediaFile extends VASTElementCompanion[MediaFile] {
    * }}}
    */
   def fromXML(node: Node): MediaFile = {
-    val value = URI.create(node.text)
+    val value = node.text
     val id = (node \ "@id").headOption
     val delivery = (node \ "@delivery")
       .headOption.map(n ⇒ Delivery.fromString(n.text)).getOrElseMissingException("delivery")

@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class CustomClick(value: URI, id: Option[String]) extends VASTElement {
+case class CustomClick(value: String, id: Option[String]) extends VASTElement {
 
   /**
    * Serializes this to a Node.
@@ -16,7 +14,7 @@ case class CustomClick(value: URI, id: Option[String]) extends VASTElement {
 
 object CustomClick extends VASTElementCompanion[CustomClick] {
 
-  def apply(value: URI): CustomClick =
+  def apply(value: String): CustomClick =
     CustomClick(value, None)
 
   /**
@@ -30,7 +28,7 @@ object CustomClick extends VASTElementCompanion[CustomClick] {
    * }}}
    */
   def fromXML(node: Node): CustomClick = {
-    val value = URI.create(node.text)
+    val value = node.text
     val id = (node \ "@id").headOption
 
     CustomClick(value, id)

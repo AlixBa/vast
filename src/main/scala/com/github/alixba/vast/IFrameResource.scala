@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class IFrameResource(value: URI) extends Resource {
+case class IFrameResource(value: String) extends Resource {
 
   /**
    * Serializes this to a Node.
@@ -27,7 +25,7 @@ object IFrameResource extends VASTElementCompanion[IFrameResource] {
    * }}}
    */
   def fromXML(node: Node): IFrameResource =
-    IFrameResource(URI.create(node.text))
+    IFrameResource(node.text)
 
 }
 

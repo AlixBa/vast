@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class Impression(value: URI, id: Option[String]) extends VASTElement {
+case class Impression(value: String, id: Option[String]) extends VASTElement {
 
   /**
    * Serializes this to a Node.
@@ -16,7 +14,7 @@ case class Impression(value: URI, id: Option[String]) extends VASTElement {
 
 object Impression extends VASTElementCompanion[Impression] {
 
-  def apply(value: URI): Impression =
+  def apply(value: String): Impression =
     Impression(value, None)
 
   /**
@@ -30,7 +28,7 @@ object Impression extends VASTElementCompanion[Impression] {
    * }}}
    */
   def fromXML(node: Node): Impression = {
-    val value = URI.create(node.text)
+    val value = node.text
     val id = (node \ "@id").headOption
 
     Impression(value, id)

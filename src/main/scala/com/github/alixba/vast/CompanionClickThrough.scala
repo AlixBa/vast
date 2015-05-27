@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class CompanionClickThrough(value: URI) extends VASTElement {
+case class CompanionClickThrough(value: String) extends VASTElement {
 
   /**
    * Serializes this to a Node.
@@ -27,6 +25,6 @@ object CompanionClickThrough extends VASTElementCompanion[CompanionClickThrough]
    * }}}
    */
   def fromXML(node: Node): CompanionClickThrough =
-    CompanionClickThrough(URI.create(node.text))
+    CompanionClickThrough(node.text)
 
 }

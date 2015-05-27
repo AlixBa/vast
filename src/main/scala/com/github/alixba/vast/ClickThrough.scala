@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class ClickThrough(value: URI, id: Option[String]) extends VASTElement {
+case class ClickThrough(value: String, id: Option[String]) extends VASTElement {
 
   /**
    * Serializes this to a Node.
@@ -16,7 +14,7 @@ case class ClickThrough(value: URI, id: Option[String]) extends VASTElement {
 
 object ClickThrough extends VASTElementCompanion[ClickThrough] {
 
-  def apply(value: URI): ClickThrough =
+  def apply(value: String): ClickThrough =
     ClickThrough(value, None)
 
   /**
@@ -30,7 +28,7 @@ object ClickThrough extends VASTElementCompanion[ClickThrough] {
    * }}}
    */
   def fromXML(node: Node): ClickThrough = {
-    val value = URI.create(node.text)
+    val value = node.text
     val id = (node \ "@id").headOption
 
     ClickThrough(value, id)

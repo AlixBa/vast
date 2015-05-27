@@ -1,7 +1,5 @@
 package com.github.alixba
 
-import java.net.URI
-
 import scala.xml._
 
 package object vast {
@@ -21,10 +19,10 @@ package object vast {
       map.foldLeft[MetaData](Null)((acc, mapEntry) ⇒ Attribute(mapEntry._1, Text(mapEntry._2), acc))
   }
 
-  implicit class RichURI(uri: URI) {
+  implicit class RichString(str: String) {
 
     def asCData: PCData =
-      PCData(uri.toString)
+      PCData(str)
 
   }
 

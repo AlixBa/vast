@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class VASTAdTagURI(value: URI) extends VASTElement {
+case class VASTAdTagURI(value: String) extends VASTElement {
 
   /**
    * Serializes this to a Node.
@@ -27,6 +25,6 @@ object VASTAdTagURI extends VASTElementCompanion[VASTAdTagURI] {
    * }}}
    */
   def fromXML(node: Node): VASTAdTagURI =
-    VASTAdTagURI(URI.create(node.text))
+    VASTAdTagURI(node.text)
 
 }

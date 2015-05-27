@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class Survey(value: URI) extends VASTElement {
+case class Survey(value: String) extends VASTElement {
 
   /**
    * Serializes this to a Node.
@@ -26,6 +24,6 @@ object Survey extends VASTElementCompanion[Survey] {
    * }}}
    */
   def fromXML(node: Node): Survey =
-    Survey(URI.create(node.text))
+    Survey(node.text)
 
 }

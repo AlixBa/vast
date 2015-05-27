@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class ClickTracking(value: URI, id: Option[String]) extends VASTElement {
+case class ClickTracking(value: String, id: Option[String]) extends VASTElement {
 
   /**
    * Serializes this to a Node.
@@ -16,7 +14,7 @@ case class ClickTracking(value: URI, id: Option[String]) extends VASTElement {
 
 object ClickTracking extends VASTElementCompanion[ClickTracking] {
 
-  def apply(value: URI): ClickTracking =
+  def apply(value: String): ClickTracking =
     ClickTracking(value, None)
 
   /**
@@ -30,7 +28,7 @@ object ClickTracking extends VASTElementCompanion[ClickTracking] {
    * }}}
    */
   def fromXML(node: Node): ClickTracking = {
-    val value = URI.create(node.text)
+    val value = node.text
     val id = (node \ "@id").headOption
 
     ClickTracking(value, id)

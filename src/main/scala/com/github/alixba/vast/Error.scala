@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class Error(value: URI) extends VASTElement {
+case class Error(value: String) extends VASTElement {
 
   /**
    * Serializes this to a Node.
@@ -27,6 +25,6 @@ object Error extends VASTElementCompanion[Error] {
    * }}}
    */
   def fromXML(node: Node): Error =
-    Error(URI.create(node.text))
+    Error(node.text)
 
 }

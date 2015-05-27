@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class StaticResource(value: URI, creativeType: String) extends Resource {
+case class StaticResource(value: String, creativeType: String) extends Resource {
 
   /**
    * Serializes this to a Node.
@@ -27,7 +25,7 @@ object StaticResource extends VASTElementCompanion[StaticResource] {
    * }}}
    */
   def fromXML(node: Node): StaticResource = {
-    val value = URI.create(node.text)
+    val value = node.text
     val creativeType = (node \ "@creativeType").headOption.getOrElseMissingException("creativeType")
 
     StaticResource(value, creativeType)

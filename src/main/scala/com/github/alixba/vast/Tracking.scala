@@ -1,10 +1,8 @@
 package com.github.alixba.vast
 
-import java.net.URI
-
 import scala.xml.Node
 
-case class Tracking(value: URI, event: Event, offset: Option[String]) extends VASTElement {
+case class Tracking(value: String, event: Event, offset: Option[String]) extends VASTElement {
 
   /**
    * Serializes this to a Node.
@@ -16,7 +14,7 @@ case class Tracking(value: URI, event: Event, offset: Option[String]) extends VA
 
 object Tracking extends VASTElementCompanion[Tracking] {
 
-  def apply(value: URI, event: Event): Tracking =
+  def apply(value: String, event: Event): Tracking =
     Tracking(value, event, None)
 
   /**
@@ -30,7 +28,7 @@ object Tracking extends VASTElementCompanion[Tracking] {
    * }}}
    */
   def fromXML(node: Node): Tracking = {
-    val value = URI.create(node.text)
+    val value = node.text
     val event = (node \ "@event").headOption.map(n ⇒ Event.fromString(n.text)).getOrElseMissingException("event")
     val offset = (node \ "@offset").headOption
 
