@@ -2,17 +2,18 @@ package com.github.alixba.vast
 
 import scala.xml.Node
 
-case class WrapperVideoClicks(clicksTracking: Seq[ClickTracking], customClicks: Seq[CustomClick])
-    extends VideoClicks {
+case class WrapperVideoClicks(clickThrough: Option[ClickThrough], clicksTracking: Seq[ClickTracking],
+                              customClicks: Seq[CustomClick]) extends VideoClicks {
 
   /**
    * Serializes this to a Node.
    */
   def toXML: Node = {
+    val clickThroughXML = clickThrough.map(_.toXML).toSeq
     val clickTrackingXML = clicksTracking.map(_.toXML)
     val customClicksXML = customClicks.map(_.toXML)
 
-    <VideoClicks>{ clickTrackingXML }{ customClicksXML }</VideoClicks>
+    <VideoClicks>{ clickThroughXML }{ clickTrackingXML }{ customClicksXML }</VideoClicks>
   }
 
 }
@@ -30,10 +31,11 @@ object WrapperVideoClicks extends VASTElementCompanion[WrapperVideoClicks] {
    * }}}
    */
   def fromXML(node: Node): WrapperVideoClicks = {
+    val clickThrough = (node \ "ClickThrough").headOption.map(ClickThrough.fromXML)
     val clickTracking = (node \ "ClickTracking").map(ClickTracking.fromXML)
     val customClicks = (node \ "CustomClick").map(CustomClick.fromXML)
 
-    WrapperVideoClicks(clickTracking, customClicks)
+    WrapperVideoClicks(clickThrough, clickTracking, customClicks)
   }
 
 }

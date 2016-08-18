@@ -222,6 +222,7 @@ trait Fixtures {
       |              <Tracking event="fullscreen" offset="string"><![CDATA[http://www.corp.com/circum/ego]]></Tracking>
       |            </TrackingEvents>
       |            <VideoClicks>
+      |              <ClickThrough id="string"><![CDATA[http://www.test.org/pectore/austris]]></ClickThrough>
       |              <ClickTracking id="string"><![CDATA[http://www.any.org/insuper/molemque]]></ClickTracking>
       |              <CustomClick id="string"><![CDATA[http://www.my.org/magno/nimborum]]></CustomClick>
       |            </VideoClicks>
