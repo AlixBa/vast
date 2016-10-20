@@ -5,7 +5,8 @@ import scala.xml.Node
 case class InLine(adSystem: AdSystem, adTitle: AdTitle, description: Option[Description],
                   advertiser: Option[Advertiser], pricing: Option[Pricing], survey: Option[Survey],
                   error: Option[Error], impressions: Seq[Impression], creatives: Seq[InLineCreative],
-                  extensions: Option[Seq[Extension]]) extends AdElement {
+                  extensions: Option[Seq[Extension]], viewableImpression: Option[ViewableImpression])
+    extends AdElement {
 
   /**
    * Serializes this to a Node.
@@ -21,8 +22,9 @@ case class InLine(adSystem: AdSystem, adTitle: AdTitle, description: Option[Desc
     val impressionXML = impressions.map(_.toXML)
     val creativesXML = creatives.map(_.toXML)
     val extensionsXML = extensions.map(n ⇒ <Extensions>{ n.map(_.toXML) }</Extensions>).toSeq
+    val viewableImpressionXML = viewableImpression.map(_.toXML).toSeq
 
-    <InLine>{ adSystemXML }{ adTitleXML }{ descriptionXML }{ advertiserXML }{ pricingXML }{ surveyXML }{ errorXML }{ impressionXML }<Creatives>{ creativesXML }</Creatives>{ extensionsXML }</InLine>
+    <InLine>{ adSystemXML }{ adTitleXML }{ descriptionXML }{ advertiserXML }{ pricingXML }{ surveyXML }{ errorXML }{ impressionXML }{ viewableImpressionXML }<Creatives>{ creativesXML }</Creatives>{ extensionsXML }</InLine>
   }
 
 }
@@ -30,7 +32,7 @@ case class InLine(adSystem: AdSystem, adTitle: AdTitle, description: Option[Desc
 object InLine extends VASTElementCompanion[InLine] {
 
   def apply(adSystem: AdSystem, adTitle: AdTitle, creatives: Seq[InLineCreative]): InLine =
-    InLine(adSystem, adTitle, None, None, None, None, None, Seq.empty, creatives, None)
+    InLine(adSystem, adTitle, None, None, None, None, None, Seq.empty, creatives, None, None)
 
   /**
    * Deserializes a Node to a T.
@@ -53,8 +55,10 @@ object InLine extends VASTElementCompanion[InLine] {
     val impressions = (node \ "Impression").map(Impression.fromXML)
     val creatives = (node \ "Creatives" \ "Creative").map(InLineCreative.fromXML)
     val extensions = (node \ "Extensions").headOption.map(n ⇒ (n \ "Extension").map(Extension.fromXML))
+    val viewableImpression = (node \ "ViewableImpression").headOption.map(ViewableImpression.fromXML)
 
-    InLine(adSystem, adTitle, description, advertiser, pricing, survey, error, impressions, creatives, extensions)
+    InLine(adSystem, adTitle, description, advertiser, pricing, survey, error, impressions, creatives, extensions,
+      viewableImpression)
   }
 
 }

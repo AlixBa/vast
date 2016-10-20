@@ -20,7 +20,7 @@ class VASTSpec extends WordSpec with Matchers with Fixtures {
 trait Fixtures {
 
   def compressStr(str: String): String =
-    str.filter(_ != '\n').replaceAll(" +", "")
+    str.filter(_ != '\n').replaceAll("\\s+", "")
 
   val vastStr =
     """
@@ -35,6 +35,11 @@ trait Fixtures {
       |      <Survey><![CDATA[http://www.company.org/sonoras/aeoliam?test=test&test=test]]></Survey>
       |      <Error><![CDATA[http://www.any.com/verrantque/temperat]]></Error>
       |      <Impression id="string"><![CDATA[http://www.any.com/circum/regemque]]></Impression>
+      |      <ViewableImpression id="string">
+      |        <Viewable><![CDATA[http://www.any.com/lorem/ipsum]]></Viewable>
+      |        <NotViewable><![CDATA[http://www.any.com/dolor/sit]]></NotViewable>
+      |        <ViewUndetermined><![CDATA[http://www.any.com/amet/consectetur]]></ViewUndetermined>
+      |      </ViewableImpression>
       |      <Creatives>
       |        <Creative id="string" sequence="100" AdID="string">
       |          <Linear skipoffset="string">
@@ -184,6 +189,11 @@ trait Fixtures {
       |      <VASTAdTagURI><![CDATA[http://www.my.com/atris/imposuit]]></VASTAdTagURI>
       |      <Error><![CDATA[http://www.my.com/animos/iras]]></Error>
       |      <Impression><![CDATA[http://www.corp.org/patriam/metuens]]></Impression>
+      |      <ViewableImpression id="string">
+      |        <Viewable><![CDATA[http://www.any.com/lorem/ipsum]]></Viewable>
+      |        <NotViewable><![CDATA[http://www.any.com/dolor/sit]]></NotViewable>
+      |        <ViewUndetermined><![CDATA[http://www.any.com/amet/consectetur]]></ViewUndetermined>
+      |      </ViewableImpression>
       |      <Creatives>
       |        <Creative id="string" sequence="100" AdID="string">
       |          <Linear>
