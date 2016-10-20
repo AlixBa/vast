@@ -49,6 +49,8 @@ trait AdElement extends VASTElement {
 
   def extensions: Option[Seq[Extension]]
 
+  def viewableImpression: Option[ViewableImpression]
+
 }
 
 object AdElement extends VASTElementCompanion[AdElement] {

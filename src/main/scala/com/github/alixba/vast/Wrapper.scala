@@ -3,7 +3,8 @@ package com.github.alixba.vast
 import scala.xml.Node
 
 case class Wrapper(adSystem: AdSystem, vastAdTagURI: VASTAdTagURI, error: Option[Error], impressions: Seq[Impression],
-                   creatives: Seq[WrapperCreative], extensions: Option[Seq[Extension]]) extends AdElement {
+                   creatives: Seq[WrapperCreative], extensions: Option[Seq[Extension]],
+                   viewableImpression: Option[ViewableImpression]) extends AdElement {
 
   /**
    * Serializes this to a Node.
@@ -15,8 +16,9 @@ case class Wrapper(adSystem: AdSystem, vastAdTagURI: VASTAdTagURI, error: Option
     val impressionXML = impressions.map(_.toXML)
     val creativesXML = creatives.map(_.toXML)
     val extensionsXML = extensions.map(n ⇒ <Extensions>{ n.map(_.toXML) }</Extensions>).toSeq
+    val viewableImpressionXML = viewableImpression.map(_.toXML).toSeq
 
-    <Wrapper>{ adSystemXML }{ vastAdTagURIXML }{ errorXML }{ impressionXML }<Creatives>{ creativesXML }</Creatives>{ extensionsXML }</Wrapper>
+    <Wrapper>{ adSystemXML }{ vastAdTagURIXML }{ errorXML }{ impressionXML }{ viewableImpressionXML }<Creatives>{ creativesXML }</Creatives>{ extensionsXML }</Wrapper>
   }
 
 }
@@ -24,7 +26,7 @@ case class Wrapper(adSystem: AdSystem, vastAdTagURI: VASTAdTagURI, error: Option
 object Wrapper extends VASTElementCompanion[Wrapper] {
 
   def apply(adSystem: AdSystem, vastAdTagURI: VASTAdTagURI, creatives: Seq[WrapperCreative]): Wrapper =
-    Wrapper(adSystem, vastAdTagURI, None, Seq.empty, creatives, None)
+    Wrapper(adSystem, vastAdTagURI, None, Seq.empty, creatives, None, None)
 
   /**
    * Deserializes a Node to a T.
@@ -44,8 +46,9 @@ object Wrapper extends VASTElementCompanion[Wrapper] {
     val impressions = (node \ "Impression").map(Impression.fromXML)
     val creatives = (node \ "Creatives" \ "Creative").map(WrapperCreative.fromXML)
     val extensions = (node \ "Extensions").headOption.map(n ⇒ (n \ "Extension").map(Extension.fromXML))
+    val viewableImpression = (node \ "ViewableImpression").headOption.map(ViewableImpression.fromXML)
 
-    Wrapper(adSystem, vastAdTagURI, error, impressions, creatives, extensions)
+    Wrapper(adSystem, vastAdTagURI, error, impressions, creatives, extensions, viewableImpression)
   }
 
 }
