@@ -20,7 +20,7 @@ class VASTSpec extends WordSpec with Matchers with Fixtures {
 trait Fixtures {
 
   def compressStr(str: String): String =
-    str.filter(_ != '\n').replaceAll(" +", "")
+    str.filter(_ != '\n').replaceAll("\\s+", "")
 
   val vastStr =
     """
