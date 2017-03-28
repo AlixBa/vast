@@ -24,6 +24,9 @@ object Event {
     case "close"            ⇒ Close
     case "skip"             ⇒ Skip
     case "progress"         ⇒ Progress
+    case event ⇒ new Event {
+      override def toString: String = event
+    }
   }
 
 }

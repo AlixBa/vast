@@ -72,6 +72,7 @@ trait Fixtures {
       |            <Duration>02:36:55+02:00</Duration>
       |            <TrackingEvents>
       |              <Tracking event="close" offset="string"><![CDATA[http://www.company.gov/feta/ac]]></Tracking>
+      |              <Tracking event="customEvent" offset="string"><![CDATA[http://www.company.gov/feta/ac]]></Tracking>
       |            </TrackingEvents>
       |            <AdParameters xmlEncoded="false">string</AdParameters>
       |            <VideoClicks>
