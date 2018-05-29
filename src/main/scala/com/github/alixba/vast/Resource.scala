@@ -23,9 +23,7 @@ object Resource extends VASTElementCompanion[Resource] {
 
     html.getOrElse(
       iframe.getOrElse(
-        static.getOrElseMissingException("HTMLResource", "IFrameResource", "StaticResource")
-      )
-    )
+        static.getOrElseMissingException("HTMLResource", "IFrameResource", "StaticResource")))
   }
 
 }

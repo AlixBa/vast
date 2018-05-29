@@ -5,12 +5,11 @@ import javax.xml.datatype.XMLGregorianCalendar
 import scala.xml.Node
 
 case class WrapperNonLinear(
-    creativeExtensions:      Option[Seq[CreativeExtension]],
-    nonLinearClicksTracking: Seq[NonLinearClickTracking], id: Option[String], width: Option[Int],
-    height: Option[Int], expandedWidth: Option[Int], expandedHeight: Option[Int],
-    scalable: Option[Boolean], maintainAspectRatio: Option[Boolean],
-    minSuggestedDuration: Option[XMLGregorianCalendar], apiFramework: Option[String]
-) extends NonLinear {
+  creativeExtensions:      Option[Seq[CreativeExtension]],
+  nonLinearClicksTracking: Seq[NonLinearClickTracking], id: Option[String], width: Option[Int],
+  height: Option[Int], expandedWidth: Option[Int], expandedHeight: Option[Int],
+  scalable: Option[Boolean], maintainAspectRatio: Option[Boolean],
+  minSuggestedDuration: Option[XMLGregorianCalendar], apiFramework: Option[String]) extends NonLinear {
 
   /**
    * Serializes this to a Node.

@@ -1,5 +1,3 @@
-resolvers ++= Seq(Resolver.url("bintray-sbt-plugin-releases", url("http://dl.bintray.com/content/sbt/sbt-plugin-releases"))(Resolver.ivyStylePatterns))
+addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.8.2")
 
-addSbtPlugin("com.danieltrinh" % "sbt-scalariform" % "1.3.0")
-
-addSbtPlugin("me.lessis" % "bintray-sbt" % "0.2.1")
+addSbtPlugin("org.foundweekends" % "sbt-bintray" % "0.5.4")

@@ -60,9 +60,7 @@ object WrapperCreativeElement extends VASTElementCompanion[WrapperCreativeElemen
 
     linear.getOrElse(
       companionAds.getOrElse(
-        nonLinearAds.getOrElseMissingException("Linear", "CompanionAds", "NonLinearAds")
-      )
-    )
+        nonLinearAds.getOrElseMissingException("Linear", "CompanionAds", "NonLinearAds")))
   }
 
 }

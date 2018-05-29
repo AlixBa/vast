@@ -1,8 +1,6 @@
 import scalariform.formatter.preferences._
 
-scalariformSettings
-
-ScalariformKeys.preferences := ScalariformKeys.preferences.value
+scalariformPreferences := scalariformPreferences.value
   .setPreference(DoubleIndentClassDeclaration, true)
   .setPreference(AlignParameters, true)
   .setPreference(AlignSingleLineCaseStatements, true)

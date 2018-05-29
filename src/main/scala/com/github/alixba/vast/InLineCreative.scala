@@ -60,9 +60,7 @@ object InLineCreativeElement extends VASTElementCompanion[InLineCreativeElement]
 
     linear.getOrElse(
       companionAds.getOrElse(
-        nonLinearAds.getOrElseMissingException("Linear", "CompanionAds", "NonLinearAds")
-      )
-    )
+        nonLinearAds.getOrElseMissingException("Linear", "CompanionAds", "NonLinearAds")))
   }
 
 }
